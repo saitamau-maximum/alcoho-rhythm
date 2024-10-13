@@ -1,0 +1,11 @@
+{
+  "name": "alcoho-rhythm-server",
+  "type": "module",
+  "dependencies": {
+    "@hono/node-server": "^1.11.1",
+    "hono": "^4.3.7"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
