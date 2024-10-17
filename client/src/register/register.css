@@ -1,0 +1,120 @@
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #283b48;
+    font-size: 16px;
+}
+
+/* コンテナ全体のデザイン */
+div {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+.date-register,
+.alcohol-register,
+.condition-register {
+    margin-top: 32px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+}
+
+/* 各セクションのタイトル */
+h2 {
+    font-size: 28px;
+    color: #283b48;
+    border-bottom: 2px solid #00a6c0;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+/* ラベルのスタイル */
+label {
+    font-size: 16px;
+    color: #283b48;
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* 日付入力フィールド */
+input[type="date"] {
+    background-color: #f9f9f9;
+    color: #283b48;
+    padding: 16px;
+    border: 1px solid #00a6c0;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    font-size: 16px;
+    margin-bottom: 32px;
+}
+
+/* テーブルのスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #00a6c0;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+td {
+    background-color: #f9f9f9;
+    color: #283b48;
+    font-size: 16px;
+}
+
+/* 入力フィールド */
+input[type="number"] {
+    padding: 12px;
+    width: 100%;
+    max-width: 152px;
+    border: 1px solid #00a6c0;
+    border-radius: 12px;
+    font-size: 16px;
+    background-color: #ffffff;
+    color: #283b48;
+}
+
+/* 体調ボタンのスタイル */
+.condition-buttons button {
+    background-color: #00a6c0;
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    margin-right: 8px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.condition-buttons button:hover {
+    background-color: #007082;
+}
+
+.condition-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+}
