@@ -1,0 +1,19 @@
+on:
+  pull_request:
+
+jobs:
+  client-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+      - name: Install Client Dependencies
+        working-directory: ./client
+        run: pnpm ci --omit=dev
+      - name: Client Build Check
+        working-directory: ./client
+        run: pnpm build
