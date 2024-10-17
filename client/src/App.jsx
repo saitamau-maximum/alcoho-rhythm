@@ -1,13 +1,14 @@
-import './App.css'
-import Dashboard from './Dashboard';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
-import Signup from './Signup';
+import "./App.css";
+import Dashboard from "./Dashboard";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import Signup from "./Signup";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Link to="/signup">Signup</Link> | <Link to="/dashboard">Dashboard</Link>
+        <Link to="/signup">Signup</Link> |{" "}
+        <Link to="/dashboard">Dashboard</Link>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -19,4 +20,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

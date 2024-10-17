@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -18,7 +18,7 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: implement form submission
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
   };
 
   return (
