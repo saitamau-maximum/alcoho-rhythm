@@ -15,7 +15,7 @@ jobs:
         run: npm install -g pnpm
       - name: Install Client Dependencies
         working-directory: ./client
-        run: pnpm ci --omit=dev
+        run: pnpm ci
       - name: Client Build Check
         working-directory: ./client
         run: pnpm build
