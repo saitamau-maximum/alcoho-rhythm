@@ -1,8 +1,10 @@
+name: lint
+
 on:
   pull_request:
 
 jobs:
-  client-build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
