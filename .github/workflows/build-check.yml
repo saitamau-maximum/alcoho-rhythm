@@ -17,8 +17,10 @@ jobs:
           node-version: "18.x"
           cache: pnpm
       - name: Install dependencies (no-frozen-lockfile)
+        working-directory: ./client
         run: pnpm install --no-frozen-lockfile
       - name: Install dependencies
+        working-directory: ./client
         run: pnpm install
       - name: Client Build Check
         working-directory: ./client
