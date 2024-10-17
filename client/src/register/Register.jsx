@@ -46,12 +46,16 @@ function Register() {
         <h2>体調の登録</h2>
         {/* 体調を5段階で選択 */}
         <label>体調を５段階評価してください</label>
-        <div className="condition-buttons">
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
+        <div className="condition-rating">
+          <span>良い</span>
+          <div className="condition-buttons">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+          </div>
+          <span>悪い</span>
         </div>
       </div>
     </div>

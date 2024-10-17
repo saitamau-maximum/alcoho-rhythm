@@ -96,13 +96,34 @@ input[type="number"] {
     color: #283b48;
 }
 
+/* 体調評価セクションのレイアウト */
+.condition-rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    gap: 16px;
+}
+
+/* 体調評価用のテキスト */
+.condition-rating span {
+    font-size: 20px;
+    color:#00a6c0;
+    font-weight: bold;
+}
+
 /* 体調ボタンのスタイル */
+.condition-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
 .condition-buttons button {
     background-color: #00a6c0;
     color: white;
     border: none;
     padding: 16px 32px;
-    margin-right: 8px;
     border-radius: 12px;
     font-size: 16px;
     cursor: pointer;
@@ -111,10 +132,4 @@ input[type="number"] {
 
 .condition-buttons button:hover {
     background-color: #007082;
-}
-
-.condition-buttons {
-    display: flex;
-    justify-content: flex-start;
-    gap: 16px;
 }
