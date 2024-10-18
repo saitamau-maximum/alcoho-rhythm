@@ -19,7 +19,7 @@ erDiagram
         TEXT password "ログインパスワード"
     }
 
-    data {
+    drinking_records {
         INTEGER id PK "飲酒ID"
         INTEGER user_id FK "ユーザーID"
         REAL alcohol_amount "純アルコール量"
