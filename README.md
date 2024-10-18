@@ -1,13 +1,8 @@
 # Alcoho-Rhythm
 
-## ER図
-
-## tweetデータベース
+## DB設計
 
 ```mermaid
----
-title: "飲酒量"
----
 erDiagram
     users ||--o{ drinking_records : "makes"
 
