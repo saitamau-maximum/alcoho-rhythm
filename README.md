@@ -24,6 +24,7 @@ erDiagram
         INTEGER user_id FK "ユーザーID"
         REAL alcohol_amount "純アルコール量 (mL)"
         INTEGER condition "体調 (1: 良い, 5: 悪い)"
-        INTEGER date "日付"
+        INTEGER date "飲酒した日付"
+        INTEGER updated_at "記録更新日時"
     }
 ```
