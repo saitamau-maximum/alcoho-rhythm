@@ -9,7 +9,7 @@
 title: "飲酒量"
 ---
 erDiagram
-    users ||--o{ data : ""
+    users ||--o{ drinking_records : "makes"
 
     users {
         INTEGER id PK "ユーザーID"
