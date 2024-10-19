@@ -9,7 +9,7 @@ const Users = {
     );`
 };
 
-const Drinking_Alcohol = {
+const Drinking_Records = {
   createTable: `
     CREATE TABLE IF NOT EXISTS drinking_records (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
