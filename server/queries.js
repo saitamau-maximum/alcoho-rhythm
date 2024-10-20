@@ -6,10 +6,10 @@ const Users = {
       weight REAL NOT NULL,
       email TEXT NOT NULL,
       password TEXT NOT NULL
-    );`
+    );`,
 };
 
-const Drinking_Records = {
+const DrinkingRecords = {
   createTable: `
     CREATE TABLE IF NOT EXISTS drinking_records (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,10 +19,8 @@ const Drinking_Records = {
       date INTEGER NOT NULL,
       updated_at INTEGER NOT NULL,
       FOREIGN KEY (user_id) REFERENCES users(id)
-    );`
+    );`,
 };
 
-module.exports = {
-  Users,
-  Drinking_Alcohol,
-};
+const queries = { Users, DrinkingRecords };
+export default queries;
