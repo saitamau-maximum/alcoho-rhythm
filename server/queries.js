@@ -7,6 +7,7 @@ const Users = {
       email TEXT NOT NULL,
       password TEXT NOT NULL
     );`,
+  create: `INSERT INTO users (username, weight, email, password) VALUES (?, ?, ?, ?)`,
 };
 
 const DrinkingRecords = {
@@ -20,6 +21,7 @@ const DrinkingRecords = {
       updated_at INTEGER NOT NULL,
       FOREIGN KEY (user_id) REFERENCES users(id)
     );`,
+  create: `INSERT INTO drinking_records (user_id, alcohol_amount, condition, date, updated_at) VALUES (?, ?, ?, strftime('%s', ?), strftime('%s', ?))`,
 };
 
 const queries = { Users, DrinkingRecords };
