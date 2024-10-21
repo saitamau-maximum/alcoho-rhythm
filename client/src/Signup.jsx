@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import './Signup.css';  // CSSファイルのインポート
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,6 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: implement form submission
     console.log("Form submitted:", formData);
   };
 
