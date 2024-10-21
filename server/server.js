@@ -11,11 +11,11 @@ const migrate = (db) => {
   db.prepare(queries.DrinkingRecords.createTable).run();
 }
 
-migrate(db);
-
 app.get("/api/hello", (c) => {
   return c.json({ message: "Hello, Alcoho-Rhythm server!" });
 });
+
+migrate(db);
 
 serve({
   fetch: app.fetch,
