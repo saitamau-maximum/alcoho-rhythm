@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import './Signup.css';  // CSSファイルのインポート
 
 const Signup = () => {
