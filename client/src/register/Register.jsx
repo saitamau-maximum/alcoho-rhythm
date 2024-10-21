@@ -16,7 +16,7 @@ function Register() {
         <table>
           <thead>
             <tr>
-              <th>酒名</th>
+              <th>お酒の種類</th>
               <th>数量</th>
             </tr>
           </thead>

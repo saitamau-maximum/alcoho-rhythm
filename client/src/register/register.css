@@ -1,10 +1,19 @@
 /* グローバル設定 */
 * {
-    box-sizing: border-box;
+    box-sizing: border-box; /* パディングとボーダーを要素の幅に含める */
     margin: 0;
     padding: 0;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #283b48;
+    font-size: 16px;
+    overflow-x: hidden; /* 横スクロールを防ぐ */
+}
 
 /* コンテナ全体のデザイン */
 div {
@@ -116,6 +125,7 @@ input[type="number"] {
     display: flex;
     justify-content: center;
     gap: 16px;
+    flex-wrap: nowrap; /* ボタンが横並びを維持 */
 }
 
 .condition-buttons button {
@@ -127,6 +137,8 @@ input[type="number"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    flex: 1; /* 各ボタンが均等に幅を占める */
+    max-width: 100px; /* ボタンの最大幅を制限 */
 }
 
 .condition-buttons button:hover {
@@ -139,7 +151,7 @@ input[type="number"] {
         padding: 16px;
     }
     .condition-buttons button {
-        padding: 16px 20px;
-        font-size: 16px;
+        padding: 12px 16px; /* ボタンのサイズを縮小 */
+        font-size: 14px; /* ボタンのフォントサイズを小さく */
     }
 }
