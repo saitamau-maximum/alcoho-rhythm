@@ -8,6 +8,7 @@ const Users = {
       password TEXT NOT NULL
     );`,
   create: `INSERT INTO users (username, weight, email, password) VALUES (?, ?, ?, ?)`,
+  findAll: `SELECT * FROM users`,
 };
 
 const DrinkingRecords = {
@@ -22,6 +23,7 @@ const DrinkingRecords = {
       FOREIGN KEY (user_id) REFERENCES users(id)
     );`,
   create: `INSERT INTO drinking_records (user_id, alcohol_amount, condition, date, updated_at) VALUES (?, ?, ?, strftime('%s', ?), strftime('%s', ?))`,
+  findAll: `SELECT * FROM drinking_records`,
 };
 
 const queries = { Users, DrinkingRecords };
