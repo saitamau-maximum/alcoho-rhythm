@@ -7,12 +7,10 @@
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: #f0f4f8;
     color: #283b48;
     font-size: 16px;
-    overflow-x: hidden; /* 横スクロールを防ぐ */
+    overflow-x: hidden;
 }
 
 /* コンテナ全体のデザイン */
@@ -20,7 +18,6 @@ div {
     max-width: 1000px;
     margin: 0 auto;
     padding: 32px;
-    width: 100%;
 }
 
 /* 各セクションのスタイル */
@@ -47,7 +44,6 @@ h2 {
 label {
     font-size: 16px;
     color: #283b48;
-    display: block;
     margin-bottom: 12px;
 }
 
@@ -55,12 +51,11 @@ label {
 input[type="date"] {
     background-color: #f9f9f9;
     color: #283b48;
-    padding: 16px;
     border: 1px solid #00a6c0;
+    padding: 16px;
     border-radius: 12px;
     width: 100%;
     max-width: 400px;
-    font-size: 16px;
     margin-bottom: 32px;
 }
 
@@ -76,7 +71,7 @@ table {
 th, td {
     padding: 20px;
     border: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
 }
 
 th {
@@ -92,7 +87,6 @@ td {
     font-size: 16px;
 }
 
-/* 入力フィールド */
 input[type="number"] {
     padding: 12px;
     width: 100%;
@@ -116,7 +110,7 @@ input[type="number"] {
 /* 体調評価用のテキスト */
 .condition-rating span {
     font-size: 20px;
-    color:#00a6c0;
+    color: #00a6c0;
     font-weight: bold;
 }
 
@@ -137,8 +131,7 @@ input[type="number"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    flex: 1; /* 各ボタンが均等に幅を占める */
-    max-width: 100px; /* ボタンの最大幅を制限 */
+    max-width: 100px;
 }
 
 .condition-buttons button:hover {
