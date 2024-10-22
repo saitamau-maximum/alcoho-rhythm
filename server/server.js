@@ -1,7 +1,8 @@
 import Database from "better-sqlite3";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import bcrypt, { hash } from "bcrypt";
+import { HTTPException } from "hono/http-exception";
+import bcrypt from "bcrypt";
 import queries from "./queries.js";
 const SALT_ROUNDS = 12;
 
@@ -14,16 +15,23 @@ const migrate = (db) => {
 };
 
 const validateInput = (username, weight, email, password) => {
-  const emailRegex = /^[^\s@]+@[^/s@]+\.[^\s@]+$/;
-  const isUsernameValid = username && username.length >= 3;
+  const emailRegex = /^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$/; 
+  const usernameRegex = /^[\wぁ-んァ-ン一-龯_-]+$/;
+  const isUsernameValid = usernameRegex.test(username);
   const isWeightValid = weight > 0;
   const isEmailValid = emailRegex.test(email);
   const isPasswordValid = password && password.length >= 8;
 
-  if(!isUsernameValid) return { valid: false, message: "Username must be at 3 character long." };
-  if(!isWeightValid) return { valid: false, message: "Weight must be greater than 0." };
-  if(!isEmailValid) return { valid: false, message: "Invalid email format." };
-  if(!isPasswordValid) return { valid: false, message: "Password must be at least 8 characters long." };
+  if (!isUsernameValid)
+    return { valid: false, message: "Invalid username format." };
+  if (!isWeightValid)
+    return { valid: false, message: "Weight must be greater than 0." };
+  if (!isEmailValid) return { valid: false, message: "Invalid email format." };
+  if (!isPasswordValid)
+    return {
+      valid: false,
+      message: "Password must be at least 8 characters long.",
+    };
 
   return { valid: true };
 };
@@ -34,25 +42,45 @@ app.get("/api/hello", (c) => {
 
 app.post("/api/signup", async (c) => {
   const param = await c.req.json();
+  const { valid, message } = validateInput(
+    param.username,
+    param.weight,
+    param.email,
+    param.password
+  );
+
   const hashPassword = async (password) => {
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
     return hash;
+  };
+
+  if (!valid) {
+    throw new HTTPException(400, { message: message });
   }
 
   const hashedPassword = await hashPassword(param.password);
 
-  db.prepare(queries.Users.create).run(
-    param.username,
-    param.weight,
-    param.email,
-    hashedPassword,
-  );
+  try {
+    db.prepare(queries.Users.create).run(
+      param.username,
+      param.weight,
+      param.email,
+      hashedPassword
+    );
+  } catch (error) {
+    if (error.message.includes("UNIQUE constraint failed")) {
+      throw new HTTPException(400, { message: "This email already exist." });
+    } else {
+      throw new HTTPException(500, {
+        message: "Database error: " + error.message,
+      });
+    }
+  }
 
   return c.json({ message: "Successfully created." });
 });
 
 migrate(db);
-
 
 serve({
   fetch: app.fetch,
