@@ -4,18 +4,47 @@ import { useState } from 'react';
 function Register() {
   // 選択された体調評価を追跡するための状態管理
   const [selectedCondition, setSelectedCondition] = useState(null);
+  // 日付の状態管理
+  const [selectedDate, setSelectedDate] = useState('');
 
-  const handleConditionClick = (value) => {
-    setSelectedCondition(value);
-  };
-
-  // 今日の日付を取得してフォーマット
+  // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため+1する
     const dd = String(today.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
+  };
+
+  // 日付が選択されたときの処理
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+  };
+
+  // 日付がバリデーション範囲内かをチェックする関数
+  const isDateValid = () => {
+    const minDate = new Date('2000-01-01');
+    const maxDate = new Date(getTodayDate());
+    const selected = new Date(selectedDate);
+    return selected >= minDate && selected <= maxDate;
+  };
+
+  // 体調ボタンがクリックされたときの処理
+  const handleConditionClick = (value) => {
+    setSelectedCondition(value);
+  };
+
+  // 登録ボタンのクリック処理
+  const handleSubmit = () => {
+    if (!isDateValid()) {
+      alert('2000年1月1日から今日までの日付を選択してください。');
+      return;
+    }
+    if (selectedCondition === null) {
+      alert('体調を選択してください。');
+      return;
+    }
+    alert('登録されました');
   };
 
   return (
@@ -28,6 +57,8 @@ function Register() {
           type="date"
           min="2000-01-01"  // 最小日付を2000年1月1日として設定
           max={getTodayDate()}  // 今日の日付までしか選べないように設定
+          value={selectedDate}
+          onChange={handleDateChange}
         />
       </div>
 
@@ -138,6 +169,15 @@ function Register() {
           </div>
           <span>悪い</span>
         </div>
+      </div>
+
+      {/* 登録ボタン */}
+      <div className="submit-button">
+        <button 
+          onClick={handleSubmit}
+        >
+          登録
+        </button>
       </div>
     </div>
   );
