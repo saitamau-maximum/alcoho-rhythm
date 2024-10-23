@@ -9,13 +9,26 @@ function Register() {
     setSelectedCondition(value);
   };
 
+  // 今日の日付を取得してフォーマット
+  const getTodayDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため+1する
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   return (
     <div>
       {/* 日付登録 */}
       <div className="date-register">
         <h2>日付登録</h2>
         <label>飲酒した日付を選択してください</label>
-        <input type="date" />
+        <input
+          type="date"
+          min="2000-01-01"  // 最小日付を2000年1月1日として設定
+          max={getTodayDate()}  // 今日の日付までしか選べないように設定
+        />
       </div>
 
       {/* 酒の数量登録 */}
