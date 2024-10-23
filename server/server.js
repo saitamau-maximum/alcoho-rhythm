@@ -22,17 +22,11 @@ const validateInput = (username, weight, email, password) => {
   const isEmailValid = emailRegex.test(email);
   const isPasswordValid = password && password.length >= 8;
 
-  if (!isUsernameValid)
-    return { valid: false, message: "Invalid username format." };
-  if (!isWeightValid)
-    return { valid: false, message: "Weight must be greater than 0." };
+  if (!isUsernameValid) return { valid: false, message: "Invalid username format." };
+  if (!isWeightValid) return { valid: false, message: "Weight must be greater than 0." };
   if (!isEmailValid) return { valid: false, message: "Invalid email format." };
-  if (!isPasswordValid)
-    return {
-      valid: false,
-      message: "Password must be at least 8 characters long.",
-    };
-
+  if (!isPasswordValid) return { valid: false, message: "Password must be at least 8 characters long.",};
+  
   return { valid: true };
 };
 
