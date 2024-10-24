@@ -15,18 +15,6 @@ app.get("/api/hello", (c) => {
   return c.json({ message: "Hello, Alcoho-Rhythm server!" });
 });
 
-app.post("/api/signup", async (c) => {
-  const param = await c.req.json();
-  db.prepare(queries.Users.create).run(
-    param.username,
-    param.weight,
-    param.email,
-    param.password
-  );
-
-  return c.json({ message: "Successfully created!" });
-});
-
 migrate(db);
 
 serve({
