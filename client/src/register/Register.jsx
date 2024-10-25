@@ -1,18 +1,18 @@
-import './register.css';
-import { useState } from 'react';
+import "./register.css";
+import { useState } from "react";
 
 function Register() {
   // 選択された体調評価を追跡するための状態管理
   const [selectedCondition, setSelectedCondition] = useState(null);
   // 日付の状態管理
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
 
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
     const today = new Date();
     const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため+1する
-    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // 月は0から始まるため+1する
+    const dd = String(today.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   };
 
@@ -23,7 +23,7 @@ function Register() {
 
   // 日付がバリデーション範囲内かをチェックする関数
   const isDateValid = () => {
-    const minDate = new Date('2000-01-01');
+    const minDate = new Date("2000-01-01");
     const maxDate = new Date(getTodayDate());
     const selected = new Date(selectedDate);
     return selected >= minDate && selected <= maxDate;
@@ -37,14 +37,14 @@ function Register() {
   // 登録ボタンのクリック処理
   const handleSubmit = () => {
     if (!isDateValid()) {
-      alert('2000年1月1日から今日までの日付を選択してください。');
+      alert("2000年1月1日から今日までの日付を選択してください。");
       return;
     }
     if (selectedCondition === null) {
-      alert('体調を選択してください。');
+      alert("体調を選択してください。");
       return;
     }
-    alert('登録されました');
+    alert("登録されました");
   };
 
   return (
@@ -55,8 +55,8 @@ function Register() {
         <label>飲酒した日付を選択してください</label>
         <input
           type="date"
-          min="2000-01-01"  // 最小日付を2000年1月1日として設定
-          max={getTodayDate()}  // 今日の日付までしか選べないように設定
+          min="2000-01-01" // 最小日付を2000年1月1日として設定
+          max={getTodayDate()} // 今日の日付までしか選べないように設定
           value={selectedDate}
           onChange={handleDateChange}
         />
@@ -81,7 +81,9 @@ function Register() {
                 <small>※1缶＝350mlとして</small>
               </td>
               <td>5%</td>
-              <td><input type="number" min="0" /> 缶</td>
+              <td>
+                <input type="number" min="0" /> 缶
+              </td>
             </tr>
             <tr>
               <td>
@@ -90,7 +92,9 @@ function Register() {
                 <small>※1缶＝500mlとして</small>
               </td>
               <td>5%</td>
-              <td><input type="number" min="0" /> 缶</td>
+              <td>
+                <input type="number" min="0" /> 缶
+              </td>
             </tr>
             <tr>
               <td>
@@ -99,7 +103,9 @@ function Register() {
                 <small>※1缶＝350mlとして</small>
               </td>
               <td>7%</td>
-              <td><input type="number" min="0" /> 缶</td>
+              <td>
+                <input type="number" min="0" /> 缶
+              </td>
             </tr>
             <tr>
               <td>
@@ -108,7 +114,9 @@ function Register() {
                 <small>※1缶＝500mlとして</small>
               </td>
               <td>7%</td>
-              <td><input type="number" min="0" /> 缶</td>
+              <td>
+                <input type="number" min="0" /> 缶
+              </td>
             </tr>
             <tr>
               <td>
@@ -117,7 +125,9 @@ function Register() {
                 <small>※1杯＝120mlとして</small>
               </td>
               <td>12%</td>
-              <td><input type="number" min="0" /> 杯</td>
+              <td>
+                <input type="number" min="0" /> 杯
+              </td>
             </tr>
             <tr>
               <td>
@@ -126,7 +136,9 @@ function Register() {
                 <small>※1合＝180mlとして</small>
               </td>
               <td>15%</td>
-              <td><input type="number" min="0" /> 合</td>
+              <td>
+                <input type="number" min="0" /> 合
+              </td>
             </tr>
             <tr>
               <td>
@@ -135,7 +147,9 @@ function Register() {
                 <small>※コップ1杯＝100mlとして</small>
               </td>
               <td>25%</td>
-              <td><input type="number" min="0" /> 杯</td>
+              <td>
+                <input type="number" min="0" /> 杯
+              </td>
             </tr>
             <tr>
               <td>
@@ -144,7 +158,9 @@ function Register() {
                 <small>※シングル1杯＝30mlとして</small>
               </td>
               <td>40%</td>
-              <td><input type="number" min="0" /> 杯</td>
+              <td>
+                <input type="number" min="0" /> 杯
+              </td>
             </tr>
           </tbody>
         </table>
@@ -160,7 +176,7 @@ function Register() {
             {[1, 2, 3, 4, 5].map((value) => (
               <button
                 key={value}
-                className={selectedCondition === value ? 'active' : ''}
+                className={selectedCondition === value ? "active" : ""}
                 onClick={() => handleConditionClick(value)}
               >
                 {value}
@@ -173,11 +189,7 @@ function Register() {
 
       {/* 登録ボタン */}
       <div className="submit-button">
-        <button 
-          onClick={handleSubmit}
-        >
-          登録
-        </button>
+        <button onClick={handleSubmit}>登録</button>
       </div>
     </div>
   );
