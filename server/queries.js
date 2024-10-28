@@ -4,7 +4,7 @@ const Users = {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
       weight REAL NOT NULL,
-      email TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL
     );`,
   create: `INSERT INTO users (username, weight, email, password) VALUES (?, ?, ?, ?)`,
