@@ -11,7 +11,7 @@ const PASSWORD_MIN_LENGTH = 8;
 const app = new Hono();
 const db = new Database("database.db");
 
-const migrate = (db) => {
+const migrate = (db) => { 
   db.prepare(queries.Users.createTable).run();
   db.prepare(queries.DrinkingRecords.createTable).run();
 };
