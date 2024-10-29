@@ -60,6 +60,13 @@ input[type="date"] {
   font-size: 16px;
 }
 
+/* エラーメッセージのスタイル */
+.error-message {
+  color: #00a6c0;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
 /* テーブルのスタイル */
 table {
   width: 100%;
