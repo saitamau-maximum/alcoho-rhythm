@@ -82,7 +82,7 @@ function Register() {
               </td>
               <td>5%</td>
               <td>
-                <input type="number" min="0" /> 缶
+                <input type="number" min="0" placeholder="0" /> 缶
               </td>
             </tr>
             <tr>
@@ -93,7 +93,7 @@ function Register() {
               </td>
               <td>5%</td>
               <td>
-                <input type="number" min="0" /> 缶
+                <input type="number" min="0" placeholder="0" /> 缶
               </td>
             </tr>
             <tr>
@@ -104,7 +104,7 @@ function Register() {
               </td>
               <td>7%</td>
               <td>
-                <input type="number" min="0" /> 缶
+                <input type="number" min="0" placeholder="0" /> 缶
               </td>
             </tr>
             <tr>
@@ -115,7 +115,7 @@ function Register() {
               </td>
               <td>7%</td>
               <td>
-                <input type="number" min="0" /> 缶
+                <input type="number" min="0" placeholder="0" /> 缶
               </td>
             </tr>
             <tr>
@@ -126,7 +126,7 @@ function Register() {
               </td>
               <td>12%</td>
               <td>
-                <input type="number" min="0" /> 杯
+                <input type="number" min="0" placeholder="0" /> 杯
               </td>
             </tr>
             <tr>
@@ -137,7 +137,7 @@ function Register() {
               </td>
               <td>15%</td>
               <td>
-                <input type="number" min="0" /> 合
+                <input type="number" min="0" placeholder="0" /> 合
               </td>
             </tr>
             <tr>
@@ -148,7 +148,7 @@ function Register() {
               </td>
               <td>25%</td>
               <td>
-                <input type="number" min="0" /> 杯
+                <input type="number" min="0" placeholder="0" /> 杯
               </td>
             </tr>
             <tr>
@@ -159,7 +159,7 @@ function Register() {
               </td>
               <td>40%</td>
               <td>
-                <input type="number" min="0" /> 杯
+                <input type="number" min="0" placeholder="0" /> 杯
               </td>
             </tr>
           </tbody>
