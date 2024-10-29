@@ -7,6 +7,7 @@ function Register() {
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [dateError, setDateError] = useState(false);
+  const [conditionError, setConditionError] = useState(false); // 体調エラー状態
 
   const navigate = useNavigate();
 
@@ -36,6 +37,7 @@ function Register() {
   // 体調ボタンがクリックされたときの処理
   const handleConditionClick = (value) => {
     setSelectedCondition(value);
+    setConditionError(false); // エラーを非表示
   };
 
   // 登録ボタンのクリック処理
@@ -45,7 +47,7 @@ function Register() {
       return;
     }
     if (selectedCondition === null) {
-      alert("体調を選択してください。");
+      setConditionError(true); // 体調エラーを表示
       return;
     }
     // ダッシュボードにリダイレクト
@@ -180,21 +182,20 @@ function Register() {
       <div className="condition-register">
         <h2>体調の登録</h2>
         <label>体調を５段階から選択</label>
-        <div className="condition-rating">
-          <span>良い</span>
-          <div className="condition-buttons">
-            {[1, 2, 3, 4, 5].map((value) => (
-              <button
-                key={value}
-                className={selectedCondition === value ? "active" : ""}
-                onClick={() => handleConditionClick(value)}
-              >
-                {value}
-              </button>
-            ))}
-          </div>
-          <span>悪い</span>
+        <div className="condition-buttons">
+          {[1, 2, 3, 4, 5].map((value) => (
+            <button
+              key={value}
+              className={selectedCondition === value ? "active" : ""}
+              onClick={() => handleConditionClick(value)}
+            >
+              {value}
+            </button>
+          ))}
         </div>
+        {conditionError && (
+          <p className="error-message">体調を選択してください。</p>
+        )}
       </div>
 
       {/* 登録ボタン */}
