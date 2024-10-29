@@ -1,11 +1,14 @@
 import "./register.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   // 状態管理
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
-  const [dateError, setDateError] = useState(false); // 日付エラー状態
+  const [dateError, setDateError] = useState(false);
+
+  const navigate = useNavigate();
 
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
@@ -19,7 +22,7 @@ function Register() {
   // 日付が選択されたときの処理
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
-    setDateError(false); // 日付が変更された場合、エラーメッセージを非表示
+    setDateError(false);
   };
 
   // 日付がバリデーション範囲内かをチェックする関数
@@ -45,11 +48,12 @@ function Register() {
       alert("体調を選択してください。");
       return;
     }
-    alert("登録されました");
+    // ダッシュボードにリダイレクト
+    navigate("/dashboard");
   };
 
   return (
-    <div>
+    <div className="register-container">
       {/* 日付登録 */}
       <div className="date-register">
         <h2>日付登録</h2>
@@ -61,9 +65,10 @@ function Register() {
           value={selectedDate}
           onChange={handleDateChange}
         />
-        {/* 日付エラーメッセージ */}
         {dateError && (
-          <p className="error-message">2000年1月1日から今日までの日付を選択できます。</p>
+          <p className="error-message">
+            2000年1月1日から今日までの日付を選択できます。
+          </p>
         )}
       </div>
 
