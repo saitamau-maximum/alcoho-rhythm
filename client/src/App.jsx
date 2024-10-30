@@ -2,7 +2,7 @@ import "./App.css";
 import Dashboard from "./Dashboard";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import Signup from "./Signup";
-import Signin from "./Signin";
+import Signin from "./signin/Signin";
 
 function App() {
   return (
