@@ -7,7 +7,7 @@ function Register() {
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [dateError, setDateError] = useState(false);
-  const [conditionError, setConditionError] = useState(false); // 体調エラー状態
+  const [conditionError, setConditionError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,37 +22,37 @@ function Register() {
 
   // 日付が選択されたときの処理
   const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-    setDateError(false);
-  };
+    const date = e.target.value;
+    setSelectedDate(date);
 
-  // 日付がバリデーション範囲内かをチェックする関数
-  const isDateValid = () => {
+    // バリデーション
     const minDate = new Date("2000-01-01");
     const maxDate = new Date(getTodayDate());
-    const selected = new Date(selectedDate);
-    return selected >= minDate && selected <= maxDate;
+    const selected = new Date(date);
+
+    if (selected >= minDate && selected <= maxDate) {
+      setDateError(false);
+    } else {
+      setDateError(true);
+    }
   };
 
   // 体調ボタンがクリックされたときの処理
   const handleConditionClick = (value) => {
     setSelectedCondition(value);
-    setConditionError(false); // エラーを非表示
+    setConditionError(false);
   };
 
   // 登録ボタンのクリック処理
   const handleSubmit = () => {
-    if (!isDateValid()) {
-      setDateError(true); // 日付エラーを表示
-      return;
+    if (!dateError && selectedDate !== "" && selectedCondition !== null) {
+      // ダッシュボードにリダイレクト
+      navigate("/dashboard");
     }
-    if (selectedCondition === null) {
-      setConditionError(true); // 体調エラーを表示
-      return;
-    }
-    // ダッシュボードにリダイレクト
-    navigate("/dashboard");
   };
+
+  // ボタンの無効化
+  const isButtonDisabled = dateError || selectedDate === "" || selectedCondition === null;
 
   return (
     <div className="register-container">
@@ -200,7 +200,9 @@ function Register() {
 
       {/* 登録ボタン */}
       <div className="submit-button">
-        <button onClick={handleSubmit}>登録</button>
+        <button onClick={handleSubmit} disabled={isButtonDisabled}>
+          登録
+        </button>
       </div>
     </div>
   );
