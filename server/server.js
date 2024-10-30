@@ -4,11 +4,18 @@ import { HTTPException } from "hono/http-exception";
 import { setCookie } from "hono/cookie";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
+import dotenv from "dotenv";
 import Database from "better-sqlite3";
 import queries from "./queries.js";
 
+// .env ファイルを読み込む
+dotenv.config();
+
 const SALT_ROUNDS = 12;
 const PASSWORD_MIN_LENGTH = 8;
+const JWT_ALGORITHM = "HS256";
+const COOKIE_NAME = "token";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = new Hono();
 const db = new Database("database.db");
