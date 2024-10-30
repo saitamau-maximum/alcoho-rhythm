@@ -2,6 +2,7 @@ import "./App.css";
 import Dashboard from "./Dashboard";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import Signup from "./Signup";
+import Signin from "./Signin";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
           <Route path="*" element={<h1>Not Found Page</h1>} />
         </Routes>
       </BrowserRouter>
