@@ -52,7 +52,8 @@ function Register() {
   };
 
   // ボタンの無効化
-  const isButtonDisabled = dateError || selectedDate === "" || selectedCondition === null;
+  const isButtonDisabled =
+    dateError || selectedDate === "" || selectedCondition === null;
 
   return (
     <div className="register-container">
