@@ -94,6 +94,40 @@ app.post("/api/signup", async (c) => {
   return c.json({ message: "Successfully created." });
 });
 
+// サインイン用のエンドポイント
+app.post("/api/signin", async (c) => {
+  const param = await c.req.json();
+
+  // email と password のバリデーション
+  validateEmail(param.email);
+  validatePassword(param.password);
+
+  const user = db.prepare(queries.Users.findByEmail).get(param.email);
+  const isPasswordValid = await bcrypt.compare(param.password, user.password);
+
+  if (!isPasswordValid) {
+    throw new HTTPException(400, { message: "Invalid email or password." });
+  }
+
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(JWT_SECRET);
+
+  const jwt = await new SignJWT({ userId: user.id })
+    .setProtectedHeader({ alg: JWT_ALGORITHM })
+    .setIssuedAt()
+    .setExpirationTime("2h")
+    .sign(secretKey);
+
+  setCookie(c, COOKIE_NAME, jwt, {
+    httpOnly: true,
+    secure: true, // HTTPS でのみ送信
+    sameSite: "Strict", // CSRF 対策
+    maxAge: 2 * 60 * 60, // 2時間
+  });
+
+  return c.json({ message: "Successfully signed in." });
+});
+
 app.onError((err) => {
   if (err instanceof HTTPException) {
     return err.getResponse();
