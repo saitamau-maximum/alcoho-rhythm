@@ -5,7 +5,8 @@
     "@hono/node-server": "^1.11.1",
     "bcrypt": "^5.1.1",
     "better-sqlite3": "^11.4.0",
-    "hono": "^4.3.7"
+    "hono": "^4.3.7",
+    "jose": "^5.9.6"
   },
   "scripts": {
     "start": "node server.js"
