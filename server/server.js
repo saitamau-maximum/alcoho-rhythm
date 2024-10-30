@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
-import { setCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
 import dotenv from "dotenv";
@@ -126,6 +126,11 @@ app.post("/api/signin", async (c) => {
   });
 
   return c.json({ message: "Successfully signed in." });
+});
+
+app.get("/api/signout", (c) => {
+  deleteCookie(c, COOKIE_NAME);
+  return c.json({ message: "Successfully signed out." });
 });
 
 app.onError((err) => {
