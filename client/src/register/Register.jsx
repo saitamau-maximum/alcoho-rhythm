@@ -184,6 +184,7 @@ function Register() {
         <h2>体調の登録</h2>
         <label>体調を５段階から選択</label>
         <div className="condition-buttons">
+          <span>良い</span>
           {[1, 2, 3, 4, 5].map((value) => (
             <button
               key={value}
@@ -193,7 +194,9 @@ function Register() {
               {value}
             </button>
           ))}
+          <span>悪い</span>
         </div>
+        
         {conditionError && (
           <p className="error-message">体調を選択してください。</p>
         )}

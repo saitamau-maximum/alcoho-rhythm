@@ -117,10 +117,11 @@ input[type="number"] {
 }
 
 /* 体調評価用のテキスト */
-.condition-rating span {
-  font-size: 20px;
+.condition-buttons span {
+  font-size: 24px;
   color: #00a6c0;
   font-weight: bold;
+  margin: 8px;
 }
 
 /* 体調ボタンのスタイル */
