@@ -196,7 +196,7 @@ function Register() {
           ))}
           <span>悪い</span>
         </div>
-        
+
         {conditionError && (
           <p className="error-message">体調を選択してください。</p>
         )}
