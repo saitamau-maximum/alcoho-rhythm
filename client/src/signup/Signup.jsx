@@ -4,6 +4,7 @@ import "./Signup.css";
 const Signup = () => {
   const [formData, setFormData] = useState({
     username: "",
+    weight: "",
     email: "",
     password: "",
   });
@@ -18,6 +19,21 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //POSTリクエストを送信する
+    fetch("http://localhost:8000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     console.log("Form submitted:", formData);
   };
 
@@ -37,9 +53,9 @@ const Signup = () => {
           />
         </div>
         <div>
-          <label htmlFor="weight">Password:</label>
+          <label htmlFor="weight">Weight:</label>
           <input
-            type="weight"
+            type="number"
             id="weight"
             name="weight"
             value={formData.weight}
