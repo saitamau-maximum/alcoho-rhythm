@@ -37,6 +37,17 @@ const Signup = () => {
           />
         </div>
         <div>
+          <label htmlFor="weight">Password:</label>
+          <input
+            type="weight"
+            id="weight"
+            name="weight"
+            value={formData.weight}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
           <label htmlFor="email">Email:</label>
           <input
             type="email"
