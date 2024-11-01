@@ -107,6 +107,12 @@ app.post("/api/signin", async (c) => {
   validatePassword(param.password);
 
   const user = db.prepare(queries.Users.findByEmail).get(param.email);
+
+  if (!user) {
+    // ユーザーが存在しない場合はエラーを返す
+    throw new HTTPException(400, { message: "Invalid email or password." });
+  }
+
   const isPasswordValid = await bcrypt.compare(param.password, user.password);
 
   if (!isPasswordValid) {
