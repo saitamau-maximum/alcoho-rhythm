@@ -8,6 +8,7 @@ const Users = {
       password TEXT NOT NULL
     );`,
   create: `INSERT INTO users (username, weight, email, password) VALUES (?, ?, ?, ?)`,
+  findByEmail: `SELECT * FROM users WHERE email = ?`,
 };
 
 const DrinkingRecords = {

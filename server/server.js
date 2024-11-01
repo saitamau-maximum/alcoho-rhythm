@@ -1,12 +1,21 @@
-import Database from "better-sqlite3";
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
+import { deleteCookie, setCookie } from "hono/cookie";
 import bcrypt from "bcrypt";
+import { SignJWT } from "jose";
+import dotenv from "dotenv";
+import Database from "better-sqlite3";
 import queries from "./queries.js";
+
+// .env ファイルを読み込む
+dotenv.config();
 
 const SALT_ROUNDS = 12;
 const PASSWORD_MIN_LENGTH = 8;
+const JWT_ALGORITHM = "HS256";
+const COOKIE_NAME = "token";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = new Hono();
 const db = new Database("database.db");
@@ -85,11 +94,62 @@ app.post("/api/signup", async (c) => {
   return c.json({ message: "Successfully created." });
 });
 
-app.onError((err) => {
-  if (err instanceof HTTPException) {
-    return err.getResponse();
+// サインイン用のエンドポイント
+app.post("/api/signin", async (c) => {
+  const param = await c.req.json();
+
+  if (!param.email || !param.password) {
+    throw new HTTPException(400, { message: "Email and password are required." });
   }
-  return new HTTPException(500, { message: "Internal server error" });
+
+  // email と password のバリデーション
+  validateEmail(param.email);
+  validatePassword(param.password);
+
+  const user = db.prepare(queries.Users.findByEmail).get(param.email);
+
+  if (!user) {
+    // ユーザーが存在しない場合はエラーを返す
+    throw new HTTPException(400, { message: "Invalid email or password." });
+  }
+
+  const isPasswordValid = await bcrypt.compare(param.password, user.password);
+
+  if (!isPasswordValid) {
+    throw new HTTPException(400, { message: "Invalid email or password." });
+  }
+
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(JWT_SECRET);
+
+  const jwt = await new SignJWT({ userId: user.id })
+    .setProtectedHeader({ alg: JWT_ALGORITHM })
+    .setIssuedAt()
+    .setExpirationTime("2h")
+    .sign(secretKey);
+
+  setCookie(c, COOKIE_NAME, jwt, {
+    httpOnly: true,
+    secure: true, // HTTPSでのみ送信
+    sameSite: "Strict", // CSRF対策
+    maxAge: 2 * 60 * 60, // 2時間
+  });
+
+  return c.json({ message: "Successfully signed in." });
+});
+
+app.get("/api/signout", (c) => {
+  deleteCookie(c, COOKIE_NAME);
+  return c.json({ message: "Successfully signed out." });
+});
+
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return c.json({ error: err.message }, err.status);
+  }
+  // Internal Server Errorの詳細を出力
+  console.error(err);
+  return c.json({ error: "Internal Server Error" }, 500);
 });
 
 migrate(db);
