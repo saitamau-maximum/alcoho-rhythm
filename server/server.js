@@ -139,6 +139,7 @@ app.onError((err, c) => {
   }
   // Internal Server Errorの詳細を出力
   console.error(err);
+  return c.json({ error: "Internal Server Error" }, 500);
 });
 
 migrate(db);
