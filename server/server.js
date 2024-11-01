@@ -137,7 +137,8 @@ app.onError((err, c) => {
   if (err instanceof HTTPException) {
     return c.json({ error: err.message }, err.status);
   }
-  return c.json({ error: "Internal server error" }, 500);
+  // Internal Server Errorの詳細を出力
+  console.error(err);
 });
 
 migrate(db);
