@@ -133,11 +133,11 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
-app.onError((err) => {
+app.onError((err, c) => {
   if (err instanceof HTTPException) {
-    return err.getResponse();
+    return c.json({ error: err.message }, err.status);
   }
-  return new HTTPException(500, { message: "Internal server error" });
+  return c.json({ error: "Internal server error" }, 500);
 });
 
 migrate(db);
