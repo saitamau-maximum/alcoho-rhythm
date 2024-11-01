@@ -130,8 +130,8 @@ app.post("/api/signin", async (c) => {
 
   setCookie(c, COOKIE_NAME, jwt, {
     httpOnly: true,
-    secure: true, // HTTPS でのみ送信
-    sameSite: "Strict", // CSRF 対策
+    secure: true, // HTTPSでのみ送信
+    sameSite: "Strict", // CSRF対策
     maxAge: 2 * 60 * 60, // 2時間
   });
 
