@@ -1,58 +1,66 @@
 import React from 'react'
-import { useRef } from "react";
+import { useState } from "react";
 
 function Signin() {
-  const usernameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
   const clearForm = () => {
-    usernameRef.current.value = "";
-    emailRef.current.value = "";
-    passwordRef.current.value = "";
+    setFormData({
+      username: "",
+      email: "",
+      password: "",
+    })
+  }
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData({...formData, [name]: value});
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userData = {
-      username: usernameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    }
-
-    const response = await fetch("/api/signin:8000", {
+    fetch("/api/signin:8000", {
       method: "POST",
-      body: JSON.stringify(userData),
+      body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
+    })
+    .then(response => {
+      if(!response.ok){
+        console.error("サーバーエラー");
+        clearForm();
+        throw new Error(response.statusText);
+      }
+      console.log("success!");
+      console.log(formData);
+    })
+    .catch(error => {
+      console.error("通信に失敗しました", error);
     });
-
-    if (response.ok) {
-      // ここでリダイレクト？
-    } else {
-      // フォームをクリアして新しく入力してもらう？
-      clearForm();
-    }
-    
   }
+
   return (
     <div>
       <h2>Signin</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div>
           <label htmlFor="username">Username:</label>
-          <input type="text" ref={usernameRef} required />
+          <input type="text" name="username" value={formData.username} onChange={(e) => handleChange(e)} required />
         </div> 
         <div>
           <label htmlFor="email">Email:</label>
-          <input type="email" ref={emailRef} required />
+          <input type="email" name="email" value={formData.email} onChange={(e) => handleChange(e)} required />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <input type="password" ref={passwordRef} required />
+          <input type="password" name="password" value={formData.password} onChange={(e) => handleChange(e)} required />
         </div>
         <button type="submit">Signin</button>
       </form>
