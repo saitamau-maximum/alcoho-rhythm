@@ -98,6 +98,10 @@ app.post("/api/signup", async (c) => {
 app.post("/api/signin", async (c) => {
   const param = await c.req.json();
 
+  if (!param.email || !param.password) {
+    throw new HTTPException(400, { message: "Email and password are required." });
+  }
+
   // email と password のバリデーション
   validateEmail(param.email);
   validatePassword(param.password);
