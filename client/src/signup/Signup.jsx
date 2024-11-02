@@ -20,21 +20,22 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //POSTリクエストを送信する
+    const data = {
+      username: document.querySelector('input[name="username"]').value,
+      weight: document.querySelector('input[name="weight"]').value,
+      email: document.querySelector('input[name="email"]').value,
+      password: document.querySelector('input[name="password"]').value,
+    }
     fetch("http://localhost:8000/signup", {
       method: "POST",
+      body:JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
-      body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    console.log("Form submitted:", formData);
+      .then((response)=>response.json())
+      .catch((error) => console.log(error));
   };
 
   return (
