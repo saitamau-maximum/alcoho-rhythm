@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Signup.css"; 
+import "./Signup.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -25,24 +25,22 @@ const Signup = () => {
       weight: formData.weight,
       email: formData.email,
       password: formData.password,
-    }
+    };
     fetch("http://localhost:8000/api/signup", {
       method: "POST",
-      body:JSON.stringify(data),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    })
-    
-    .then((res) => {
+    }).then((res) => {
       if (res.status === 400) {
         throw new Error("This email already exist.");
       } else if (res.status === 500) {
         throw new Error("Database error");
       }
       return res.json();
-    })
+    });
   };
 
   return (
