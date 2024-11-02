@@ -29,10 +29,10 @@ function Signin() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const response = await fetch("/api/signin:8000", {
+    fetch("/api/signin:8000", {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {
@@ -40,20 +40,18 @@ function Signin() {
         Accept: "application/json",
       },
     })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
 
-    if(!response.ok){
-      const errorData = await response.json();
-
-      if(errorData.error == "Invalid email or password."){
-        setMessage("メールアドレスまたはパスワードが正しくありません。");
-      } else {
-        setMessage("通信エラーが発生しました。再度お試しください。");
-      }
-      clearForm();
-      return; //処理を終了してリダイレクトさせない
-    }
-    
-    navigate("/dashboard", { replace: true }); //サインインに成功したらリダイレクト
+        // サインインに成功したらリダイレクト
+        navigate("/dashboard", { replace: true });
+      })
+      .catch(() => {
+        clearForm();
+        setMessage("サインインに失敗しました。再度お試しください。");
+      });
   };
 
   return (
