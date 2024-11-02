@@ -21,12 +21,12 @@ const Signup = () => {
     e.preventDefault();
     //POSTリクエストを送信する
     const data = {
-      username: document.querySelector('input[name="username"]').value,
-      weight: document.querySelector('input[name="weight"]').value,
-      email: document.querySelector('input[name="email"]').value,
-      password: document.querySelector('input[name="password"]').value,
+      username: formData.username,
+      weight: formData.weight,
+      email: formData.email,
+      password: formData.password,
     }
-    fetch("http://localhost:8000/signup", {
+    fetch("http://localhost:8000/api/signup", {
       method: "POST",
       body:JSON.stringify(data),
       headers: {
@@ -34,8 +34,15 @@ const Signup = () => {
         Accept: "application/json",
       },
     })
-      .then((response)=>response.json())
-      .catch((error) => console.log(error));
+    
+    .then((res) => {
+      if (res.status === 400) {
+        throw new Error("This email already exist.");
+      } else if (res.status === 500) {
+        throw new Error("Database error");
+      }
+      return res.json();
+    })
   };
 
   return (
