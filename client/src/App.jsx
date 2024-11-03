@@ -9,8 +9,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Link to="/signup">Signup</Link> |{" "}
-        <Link to="/signin">Signin</Link> |{" "}
+        <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
         <Link to="/dashboard">Dashboard</Link> |{" "}
         <Link to="/Register">Register</Link>
         <Routes>
