@@ -4,7 +4,6 @@ import Dashboard from "./Dashboard";
 import Signin from "./signin/Signin";
 import Register from "./register/Register";
 import Signup from "./Signup";
-import Signin from "./signin/Signin";
 
 function App() {
   return (
