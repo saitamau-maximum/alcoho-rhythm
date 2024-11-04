@@ -7,6 +7,13 @@ function Signin() {
   const [message, setMessage] = useState(null);
   const navigate = useNavigate();  
 
+  const validatePassword = (e) => {
+    const password = e.target.value;
+    if(password.length < 8){
+      setMessage("Password must be at least 8 characters long.");
+    }
+  }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -14,9 +21,9 @@ function Signin() {
       setMessage("Email and password are required.");
       return;
     }
-    // パスワードのバリデーション
-    if(password < 8){
-      setMessage("");
+
+    if(password.length < 8){
+      setMessage("Password must be at least 8 characters long.");
       return;
     }
 
@@ -68,6 +75,7 @@ function Signin() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onBlur={validatePassword}
             required
           />
         </div>
