@@ -158,3 +158,58 @@ serve({
   fetch: app.fetch,
   port: 8000,
 });
+
+//飲酒量記録のエンドポイント
+app.post("/api/resister", async (c) => {
+  const param = await c.req.json();
+
+  // パラメータが存在するか確認
+  if (!param.date || !param.amounts || !param.condition) {
+    throw new HTTPException(400, { message: "Date, amounts, and condition are required." });
+  }
+
+  // JWTからユーザーIDを取得
+  const token = c.req.cookie(COOKIE_NAME);
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(JWT_SECRET);
+  let userId;
+
+  try {
+    const { payload } = await SignJWT.verify(token, secretKey);
+    userId = payload.userId;
+  } catch {
+    throw new HTTPException(401, { message: "Invalid or expired token." });
+  }
+
+  // 日付のバリデーション
+  const selectedDate = new Date(param.date);
+  const minDate = new Date("2000-01-01");
+  const maxDate = new Date();
+  if (selectedDate < minDate || selectedDate > maxDate) {
+    throw new HTTPException(400, { message: "Date must be between 2000-01-01 and today." });
+  }
+
+  // 体調のバリデーション（1から5の範囲か確認）
+  if (param.condition < 1 || param.condition > 5) {
+    throw new HTTPException(400, { message: "Condition must be between 1 and 5." });
+  }
+
+  // データベースに記録
+  try {
+    db.prepare(queries.DrinkingRecords.create).run(
+      userId,
+      param.date,
+      JSON.stringify(param.amounts),
+      param.condition
+    );
+  } catch (error) {
+    console.error(error);
+    throw new HTTPException(500, { message: "Database error" });
+  }
+
+  return c.json({ message: "Record successfully created." });
+});
