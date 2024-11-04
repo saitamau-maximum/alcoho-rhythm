@@ -45,7 +45,7 @@ function Signin() {
         // 成功メッセージを表示またはリダイレクト
         setMessage("Successfully signed in.");
         // 必要に応じて、ダッシュボードやホームにリダイレクトなど
-        navigate("/dashboard", { replace: true });
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Error signing in:", error);
