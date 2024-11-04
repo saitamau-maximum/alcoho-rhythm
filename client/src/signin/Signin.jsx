@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate();  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,9 +14,14 @@ function Signin() {
       setMessage("Email and password are required.");
       return;
     }
+    // パスワードのバリデーション
+    if(password < 8){
+      setMessage("");
+      return;
+    }
 
     try {
-      const response = await fetch("/api/signin", {
+      const response = await fetch("http:/localhost:8000/api/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,12 +33,12 @@ function Signin() {
 
       if (!response.ok) {
         // エラーメッセージを表示
-        setMessage(data.message || "An error occurred.");
+        setMessage(data.error || "An error occurred.");
       } else {
         // 成功メッセージを表示またはリダイレクト
         setMessage("Successfully signed in.");
         // 必要に応じて、ダッシュボードやホームにリダイレクトなど
-        // window.location.href = "/dashboard";
+        navigate("/dashboard", { replace: true });
       }
     } catch (error) {
       console.error("Error signing in:", error);
