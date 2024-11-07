@@ -7,6 +7,7 @@ import { SignJWT } from "jose";
 import dotenv from "dotenv";
 import Database from "better-sqlite3";
 import queries from "./queries.js";
+import { cors } from "hono/cors";
 
 // .env ファイルを読み込む
 dotenv.config();
@@ -19,6 +20,11 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = new Hono();
 const db = new Database("database.db");
+
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:4173"],
+  credentials: true,
+}));
 
 const migrate = (db) => {
   db.prepare(queries.Users.createTable).run();
