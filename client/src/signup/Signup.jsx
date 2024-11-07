@@ -55,7 +55,6 @@ const Signup = () => {
     console.log("User registered successfully:", res);
 
     try {
-      console.log(data);
       signin(data.email, data.password);
       navigate("/dashboard");
     } catch (error) {
