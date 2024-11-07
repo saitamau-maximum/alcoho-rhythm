@@ -21,7 +21,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const app = new Hono();
 const db = new Database("database.db");
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:4173"],
+  credentials: true,
+}));
 
 const migrate = (db) => {
   db.prepare(queries.Users.createTable).run();
