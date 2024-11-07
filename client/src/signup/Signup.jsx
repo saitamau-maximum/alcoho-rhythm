@@ -50,12 +50,13 @@ const Signup = () => {
       } else {
         setError("不明なエラーが発生しました。");
       }
+      return;
     }
 
     console.log("User registered successfully:", res);
 
     try {
-      signin(data.email, data.password);
+      await signin(data.email, data.password);
       navigate("/dashboard");
     } catch (error) {
       setError("サインインエラーが発生しました。");
