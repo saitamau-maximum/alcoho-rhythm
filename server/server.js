@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
-import { deleteCookie, setCookie } from "hono/cookie";
+import { deleteCookie, setCookie, getCookie } from "hono/cookie"; 
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
 import dotenv from "dotenv";
@@ -165,7 +165,7 @@ serve({
   port: 8000,
 });
 
-//飲酒量記録のエンドポイント
+// 飲酒量記録のエンドポイント
 app.post("/api/resister", async (c) => {
   const param = await c.req.json();
 
@@ -175,7 +175,7 @@ app.post("/api/resister", async (c) => {
   }
 
   // JWTからユーザーIDを取得
-  const token = c.req.cookie(COOKIE_NAME);
+  const token = getCookie(c, COOKIE_NAME);
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
