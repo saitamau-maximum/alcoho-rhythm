@@ -219,3 +219,31 @@ app.post("/api/resister", async (c) => {
 
   return c.json({ message: "Record successfully created." });
 });
+
+app.get("/api/register", async (c) => {
+  // JWTからユーザーIDを取得
+  const token = getCookie(c, COOKIE_NAME);
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(JWT_SECRET);
+  let userId;
+
+  try {
+    const { payload } = await SignJWT.verify(token, secretKey);
+    userId = payload.userId; // ユーザーIDを抽出
+  } catch {
+    throw new HTTPException(401, { message: "Invalid or expired token." });
+  }
+
+  try {
+    // データベースからユーザーの飲酒記録を取得
+    const records = db.prepare(queries.DrinkingRecords.findByUserId).all(userId);
+    return c.json(records); 
+  } catch (error) {
+    console.error(error);
+    throw new HTTPException(500, { message: "Database error" });
+  }
+});
