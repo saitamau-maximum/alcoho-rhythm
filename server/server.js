@@ -93,7 +93,7 @@ app.post("/api/signup", async (c) => {
     if (error.message.includes("UNIQUE constraint failed")) {
       throw new HTTPException(400, { message: "This email already exist." });
     } else {
-      throw new HTTPException(500, { message: "Database error" });
+      throw error;
     }
   }
 
@@ -149,22 +149,6 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
-app.onError((err, c) => {
-  if (err instanceof HTTPException) {
-    return c.json({ error: err.message }, err.status);
-  }
-  // Internal Server Errorの詳細を出力
-  console.error(err);
-  return c.json({ error: "Internal Server Error" }, 500);
-});
-
-migrate(db);
-
-serve({
-  fetch: app.fetch,
-  port: 8000,
-});
-
 // 飲酒量記録のエンドポイント
 app.post("/api/records", async (c) => {
   const param = await c.req.json();
@@ -172,6 +156,19 @@ app.post("/api/records", async (c) => {
   // パラメータが存在するか確認
   if (!param.date || !param.amounts || !param.condition) {
     throw new HTTPException(400, { message: "Date, amounts, and condition are required." });
+  }
+
+  // 型バリデーション
+  if (typeof param.date !== "string") {
+    throw new HTTPException(400, { message: "Date must be a string." });
+  }
+
+  if (!Array.isArray(param.amounts)) {
+    throw new HTTPException(400, { message: "Amounts must be an array." });
+  }
+
+  if (typeof param.condition !== "number") {
+    throw new HTTPException(400, { message: "Condition must be a number." });
   }
 
   // JWTからユーザーIDを取得
