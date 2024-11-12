@@ -188,7 +188,7 @@ app.post("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Invalid or expired token." });
   }
 
-  // 日付のバリデーション
+  // JSTで日付のバリデーション
   const selectedDate = new Date(param.date);
   const minDate = new Date("2000-01-01T00:00:00+09:00"); // JST
   const maxDate = new Date();
@@ -201,10 +201,13 @@ app.post("/api/records", async (c) => {
     throw new HTTPException(400, { message: "Condition must be between 1 and 5." });
   }
 
-  // データベースに記録
+  // ISO 8601形式のUTC日時に変換
+  const utcDate = new Date(param.date).toISOString();
+
+  // param.dateはJSTなのでUTCに変換してデータベースに保存する
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
-    param.date,
+    utcDate,
     JSON.stringify(param.amounts),
     param.condition
   );
@@ -241,8 +244,12 @@ app.get("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Invalid or expired token." });
   }
 
-  // データベースからユーザーの飲酒記録を取得
-  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, param.start, param.end);
+  // UTCに変換してからデータベースから取得
+  const utcStart = new Date(param.start).toISOString();
+  const utcEnd = new Date(param.end).toISOString();
+
+  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
+
   return c.json(records);
 });
 
