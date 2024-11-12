@@ -251,7 +251,7 @@ app.post("/api/records", async (c) => {
 
 app.put("/api/records/:id", async (c) => {
   const param = await c.req.json();
-  const { id } = c.req.params;
+  const id = c.req.param("id");
 
   if (!param.amount && !param.condition) {
     throw new HTTPException(400, { message: "amount or condition is required." });
@@ -265,6 +265,22 @@ app.put("/api/records/:id", async (c) => {
     throw new HTTPException(400, { message: "condition must be a number." });
   }
 
+  if (param.date && typeof param.date !== "string") {
+    throw new HTTPException(400, { message: "date must be a string." });
+  }
+
+  // JSTで日付のバリデーション
+  const selectedDate = new Date(param.date);
+
+  const minDateJst = new Date("2000-01-01T00:00:00Z");
+
+  const nowDateJst = new Date();
+  nowDateJst.setHours(nowDateJst.getHours() + 9); // JSTとして解釈するために時差を足す
+
+  if (selectedDate < minDateJst || selectedDate > nowDateJst) {
+    throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
+  }
+
   const token = getCookie(c, COOKIE_NAME);
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
@@ -272,7 +288,8 @@ app.put("/api/records/:id", async (c) => {
 
   const userId = await getUserIdFromJwt(token, JWT_SECRET);
 
-  const record = db.prepare("SELECT * FROM drinking_records WHERE id = ?").get(id, userId);
+  const record = db.prepare(queries.DrinkingRecords.findById).get(id);
+
   if (!record) {
     throw new HTTPException(404, { message: "Record not found." });
   }
@@ -282,9 +299,16 @@ app.put("/api/records/:id", async (c) => {
     throw new HTTPException(403, { message: "Forbidden" });
   }
 
-  const utcDateNow = new Date().toISOString();
+  const nowDateUtcStr = new Date().toISOString();
 
-  db.prepare(update).run(param.amount || record.alcohol_amount, param.condition || record.condition, utcDateNow, id);
+  db.prepare(queries.DrinkingRecords.update)
+    .run(
+      param.amount || record.alcohol_amount,
+      param.condition || record.condition,
+      param.date || record.date,
+      nowDateUtcStr,
+      id
+    );
 
   return c.json({ message: "Record successfully updated." });
 });
