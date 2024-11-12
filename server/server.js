@@ -154,7 +154,7 @@ app.post("/api/records", async (c) => {
   const param = await c.req.json();
 
   // パラメータが存在するか確認
-  if (!param.date || !param.amounts || !param.condition) {
+  if (!param.date || !param.amount || !param.condition) {
     throw new HTTPException(400, { message: "date, amount, and condition are required." });
   }
 
@@ -207,8 +207,8 @@ app.post("/api/records", async (c) => {
   // param.dateはJSTなのでUTCに変換してデータベースに保存する
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
+    param.amount,
     utcDate,
-    JSON.stringify(param.amounts),
     param.condition
   );
 
