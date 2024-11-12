@@ -3,7 +3,7 @@ import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
 import { deleteCookie, setCookie, getCookie } from "hono/cookie";
 import bcrypt from "bcrypt";
-import { SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import dotenv from "dotenv";
 import Database from "better-sqlite3";
 import queries from "./queries.js";
@@ -61,6 +61,21 @@ const validatePassword = (password) => {
       message: "Password must be at least 8 characters long.",
     });
   }
+};
+
+const getUserIdFromJwt = async (token, jwtSecret) => {
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(jwtSecret);
+  let userId;
+
+  try {
+    const { payload } = await jwtVerify(token, secretKey);
+    userId = payload.userId; // ユーザーIDを抽出
+  } catch {
+    throw new HTTPException(401, { message: "Invalid or expired token." });
+  }
+
+  return userId;
 };
 
 app.get("/api/hello", (c) => {
@@ -167,17 +182,6 @@ app.get("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
-  const encoder = new TextEncoder();
-  const secretKey = encoder.encode(JWT_SECRET);
-  let userId;
-
-  try {
-    const { payload } = await SignJWT.verify(token, secretKey);
-    userId = payload.userId; // ユーザーIDを抽出
-  } catch {
-    throw new HTTPException(401, { message: "Invalid or expired token." });
-  }
-
   // UTCに変換してからデータベースから取得
   const utcStart = new Date(param.start).toISOString();
   const utcEnd = new Date(param.end).toISOString();
@@ -215,16 +219,7 @@ app.post("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
-  const encoder = new TextEncoder();
-  const secretKey = encoder.encode(JWT_SECRET);
-  let userId;
-
-  try {
-    const { payload } = await SignJWT.verify(token, secretKey);
-    userId = payload.userId;
-  } catch {
-    throw new HTTPException(401, { message: "Invalid or expired token." });
-  }
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
 
   // JSTで日付のバリデーション
   const selectedDate = new Date(param.date);
@@ -275,16 +270,7 @@ app.put("/api/records/:id", async (c) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
-  const encoder = new TextEncoder();
-  const secretKey = encoder.encode(JWT_SECRET);
-  let userId;
-
-  try {
-    const { payload } = await SignJWT.verify(token, secretKey);
-    userId = payload.userId;
-  } catch {
-    throw new HTTPException(401, { message: "Invalid or expired token." });
-  }
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
 
   const record = db.prepare("SELECT * FROM drinking_records WHERE id = ?").get(id, userId);
   if (!record) {
@@ -311,16 +297,7 @@ app.delete("/api/records/:id", async (c) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
-  const encoder = new TextEncoder();
-  const secretKey = encoder.encode(JWT_SECRET);
-  let userId;
-
-  try {
-    const { payload } = await SignJWT.verify(token, secretKey);
-    userId = payload.userId;
-  } catch {
-    throw new HTTPException(401, { message: "Invalid or expired token." });
-  }
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
 
   const record = db.prepare("SELECT * FROM drinking_records WHERE id = ?").get(id, userId);
   if (!record) {
