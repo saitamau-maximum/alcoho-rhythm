@@ -202,14 +202,15 @@ app.post("/api/records", async (c) => {
   }
 
   // ISO 8601形式のUTC日時に変換
-  const utcDate = new Date(param.date).toISOString();
+  const utcDateNow = new Date().toISOString();
 
   // param.dateはJSTなのでUTCに変換してデータベースに保存する
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
     param.amount,
-    utcDate,
-    param.condition
+    param.condition,
+    utcDateNow,
+    utcDateNow,
   );
 
   return c.json({ message: "Record successfully created." });
