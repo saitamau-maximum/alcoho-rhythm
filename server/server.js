@@ -223,9 +223,13 @@ app.post("/api/records", async (c) => {
 
   // JSTで日付のバリデーション
   const selectedDate = new Date(param.date);
-  const minDate = new Date("2000-01-01T00:00:00+09:00"); // JST
-  const maxDate = new Date();
-  if (selectedDate < minDate || selectedDate > maxDate) {
+
+  const minDateJst = new Date("2000-01-01T00:00:00Z");
+
+  const nowDateJst = new Date();
+  nowDateJst.setHours(nowDateJst.getHours() + 9); // JSTとして解釈するために時差を足す
+
+  if (selectedDate < minDateJst || selectedDate > nowDateJst) {
     throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
   }
 
@@ -234,16 +238,15 @@ app.post("/api/records", async (c) => {
     throw new HTTPException(400, { message: "condition must be between 1 and 5." });
   }
 
-  // ISO 8601形式のUTC日時に変換
-  const utcDateNow = new Date().toISOString();
+  // DBにはUNIX時間で保存するため、UTCで現在時刻を取得
+  const nowDateUtcStr = new Date().toISOString();
 
-  // param.dateはJSTなのでUTCに変換してデータベースに保存する
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
     param.amount,
     param.condition,
-    utcDateNow,
-    utcDateNow,
+    nowDateUtcStr,
+    nowDateUtcStr,
   );
 
   return c.json({ message: "Record successfully created." });
