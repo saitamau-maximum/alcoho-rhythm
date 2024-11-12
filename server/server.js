@@ -230,6 +230,10 @@ app.get("/api/records", async (c) => {
 
   const token = getCookie(c, COOKIE_NAME);
 
+app.delete("/api/records/:id", async (c) => {
+  const { id } = c.req.params;
+
+  const token = getCookie(c, COOKIE_NAME);
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
@@ -240,18 +244,23 @@ app.get("/api/records", async (c) => {
 
   try {
     const { payload } = await SignJWT.verify(token, secretKey);
-    userId = payload.userId; // ユーザーIDを抽出
+    userId = payload.userId;
   } catch {
     throw new HTTPException(401, { message: "Invalid or expired token." });
   }
 
-  // UTCに変換してからデータベースから取得
-  const utcStart = new Date(param.start).toISOString();
-  const utcEnd = new Date(param.end).toISOString();
+  const record = db.prepare("SELECT * FROM drinking_records WHERE id = ?").get(id, userId);
+  if (!record) {
+    throw new HTTPException(404, { message: "Record not found." });
+  }
 
-  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
+  if (record.user_id !== userId) {
+    throw new HTTPException(403, { message: "Forbidden" });
+  }
 
-  return c.json(records);
+  db.prepare(queries.DrinkingRecords.delete).run(userId);
+
+  return c.json({ message: "Record successfully deleted." });
 });
 
 app.onError((err, c) => {
