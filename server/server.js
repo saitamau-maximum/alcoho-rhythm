@@ -216,19 +216,54 @@ app.post("/api/records", async (c) => {
   return c.json({ message: "Record successfully created." });
 });
 
-app.get("/api/records", async (c) => {
+app.put("/api/records/:id", async (c) => {
   const param = await c.req.json();
+  const { id } = c.req.params;
 
-  if (!param.start || !param.end) {
-    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" are required." });
+  if (!param.amount && !param.condition) {
+    throw new HTTPException(400, { message: "amount or condition is required." });
   }
 
-  // 型バリデーション
-  if (typeof param.start !== "string" || typeof param.end !== "string") {
-    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" must be string." });
+  if (param.amount && typeof param.amount !== "number") {
+    throw new HTTPException(400, { message: "amount must be a number." });
+  }
+
+  if (param.condition && typeof param.condition !== "number") {
+    throw new HTTPException(400, { message: "condition must be a number." });
   }
 
   const token = getCookie(c, COOKIE_NAME);
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(JWT_SECRET);
+  let userId;
+
+  try {
+    const { payload } = await SignJWT.verify(token, secretKey);
+    userId = payload.userId;
+  } catch {
+    throw new HTTPException(401, { message: "Invalid or expired token." });
+  }
+
+  const record = db.prepare("SELECT * FROM drinking_records WHERE id = ?").get(id, userId);
+  if (!record) {
+    throw new HTTPException(404, { message: "Record not found." });
+  }
+
+  // drinking_records.user_id と JWTのユーザーIDが一致するか確認
+  if (record.user_id !== userId) {
+    throw new HTTPException(403, { message: "Forbidden" });
+  }
+
+  const utcDateNow = new Date().toISOString();
+
+  db.prepare(update).run(param.amount || record.alcohol_amount, param.condition || record.condition, utcDateNow, id);
+
+  return c.json({ message: "Record successfully updated." });
+});
 
 app.delete("/api/records/:id", async (c) => {
   const { id } = c.req.params;
