@@ -155,20 +155,20 @@ app.post("/api/records", async (c) => {
 
   // パラメータが存在するか確認
   if (!param.date || !param.amounts || !param.condition) {
-    throw new HTTPException(400, { message: "Date, amounts, and condition are required." });
+    throw new HTTPException(400, { message: "date, amount, and condition are required." });
   }
 
   // 型バリデーション
   if (typeof param.date !== "string") {
-    throw new HTTPException(400, { message: "Date must be a string." });
+    throw new HTTPException(400, { message: "date must be a string." });
   }
 
-  if (!Array.isArray(param.amounts)) {
-    throw new HTTPException(400, { message: "Amounts must be an array." });
+  if (typeof param.amount !== "number") {
+    throw new HTTPException(400, { message: "amount must be a number." });
   }
 
   if (typeof param.condition !== "number") {
-    throw new HTTPException(400, { message: "Condition must be a number." });
+    throw new HTTPException(400, { message: "condition must be a number." });
   }
 
   // JWTからユーザーIDを取得
@@ -193,12 +193,12 @@ app.post("/api/records", async (c) => {
   const minDate = new Date("2000-01-01T00:00:00+09:00"); // JST
   const maxDate = new Date();
   if (selectedDate < minDate || selectedDate > maxDate) {
-    throw new HTTPException(400, { message: "Date must be between 2000-01-01 (JST) and today." });
+    throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
   }
 
   // 体調のバリデーション（1から5の範囲か確認）
   if (param.condition < 1 || param.condition > 5) {
-    throw new HTTPException(400, { message: "Condition must be between 1 and 5." });
+    throw new HTTPException(400, { message: "condition must be between 1 and 5." });
   }
 
   // ISO 8601形式のUTC日時に変換
