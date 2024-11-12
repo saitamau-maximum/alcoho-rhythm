@@ -221,7 +221,17 @@ app.post("/api/records", async (c) => {
 });
 
 app.get("/api/records", async (c) => {
-  // JWTからユーザーIDを取得
+  const param = await c.req.json();
+
+  if (!param.start || !param.end) {
+    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" are required." });
+  }
+
+  // 型バリデーション
+  if (typeof param.start !== "string" || typeof param.end !== "string") {
+    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" must be string." });
+  }
+
   const token = getCookie(c, COOKIE_NAME);
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
