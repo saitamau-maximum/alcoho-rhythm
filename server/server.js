@@ -290,7 +290,7 @@ app.put("/api/records/:id", async (c) => {
 });
 
 app.delete("/api/records/:id", async (c) => {
-  const { id } = c.req.params;
+  const id = c.req.param("id");
 
   const token = getCookie(c, COOKIE_NAME);
   if (!token) {
@@ -299,7 +299,8 @@ app.delete("/api/records/:id", async (c) => {
 
   const userId = await getUserIdFromJwt(token, JWT_SECRET);
 
-  const record = db.prepare("SELECT * FROM drinking_records WHERE id = ?").get(id, userId);
+  const record = db.prepare(queries.DrinkingRecords.findById).get(id);
+
   if (!record) {
     throw new HTTPException(404, { message: "Record not found." });
   }
@@ -308,7 +309,7 @@ app.delete("/api/records/:id", async (c) => {
     throw new HTTPException(403, { message: "Forbidden" });
   }
 
-  db.prepare(queries.DrinkingRecords.delete).run(userId);
+  db.prepare(queries.DrinkingRecords.delete).run(id);
 
   return c.json({ message: "Record successfully deleted." });
 });
