@@ -149,6 +149,44 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
+app.get("/api/records", async (c) => {
+  const param = await c.req.json();
+
+  if (!param.start || !param.end) {
+    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" are required." });
+  }
+
+  // 型バリデーション
+  if (typeof param.start !== "string" || typeof param.end !== "string") {
+    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" must be string." });
+  }
+
+  const token = getCookie(c, COOKIE_NAME);
+
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(JWT_SECRET);
+  let userId;
+
+  try {
+    const { payload } = await SignJWT.verify(token, secretKey);
+    userId = payload.userId; // ユーザーIDを抽出
+  } catch {
+    throw new HTTPException(401, { message: "Invalid or expired token." });
+  }
+
+  // UTCに変換してからデータベースから取得
+  const utcStart = new Date(param.start).toISOString();
+  const utcEnd = new Date(param.end).toISOString();
+
+  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
+
+  return c.json(records);
+});
+
 // 飲酒量記録のエンドポイント
 app.post("/api/records", async (c) => {
   const param = await c.req.json();
