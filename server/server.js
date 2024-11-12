@@ -205,17 +205,12 @@ app.post("/api/records", async (c) => {
   }
 
   // データベースに記録
-  try {
-    db.prepare(queries.DrinkingRecords.create).run(
-      userId,
-      param.date,
-      JSON.stringify(param.amounts),
-      param.condition
-    );
-  } catch (error) {
-    console.error(error);
-    throw new HTTPException(500, { message: "Database error" });
-  }
+  db.prepare(queries.DrinkingRecords.create).run(
+    userId,
+    param.date,
+    JSON.stringify(param.amounts),
+    param.condition
+  );
 
   return c.json({ message: "Record successfully created." });
 });
@@ -233,6 +228,7 @@ app.get("/api/records", async (c) => {
   }
 
   const token = getCookie(c, COOKIE_NAME);
+
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
@@ -248,12 +244,23 @@ app.get("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Invalid or expired token." });
   }
 
-  try {
-    // データベースからユーザーの飲酒記録を取得
-    const records = db.prepare(queries.DrinkingRecords.findByUserId).all(userId);
-    return c.json(records);
-  } catch (error) {
-    console.error(error);
-    throw new HTTPException(500, { message: "Database error" });
+  // データベースからユーザーの飲酒記録を取得
+  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, param.start, param.end);
+  return c.json(records);
+});
+
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return c.json({ error: err.message }, err.status);
   }
+  // Internal Server Errorの詳細を出力
+  console.error(err);
+  return c.json({ error: "Internal Server Error" }, 500);
+});
+
+migrate(db);
+
+serve({
+  fetch: app.fetch,
+  port: 8000,
 });
