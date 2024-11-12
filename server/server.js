@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
-import { deleteCookie, setCookie, getCookie } from "hono/cookie"; 
+import { deleteCookie, setCookie, getCookie } from "hono/cookie";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
 import dotenv from "dotenv";
@@ -241,7 +241,7 @@ app.get("/api/register", async (c) => {
   try {
     // データベースからユーザーの飲酒記録を取得
     const records = db.prepare(queries.DrinkingRecords.findByUserId).all(userId);
-    return c.json(records); 
+    return c.json(records);
   } catch (error) {
     console.error(error);
     throw new HTTPException(500, { message: "Database error" });
