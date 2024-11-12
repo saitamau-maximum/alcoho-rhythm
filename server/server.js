@@ -166,7 +166,7 @@ serve({
 });
 
 // 飲酒量記録のエンドポイント
-app.post("/api/resister", async (c) => {
+app.post("/api/records", async (c) => {
   const param = await c.req.json();
 
   // パラメータが存在するか確認
@@ -193,10 +193,10 @@ app.post("/api/resister", async (c) => {
 
   // 日付のバリデーション
   const selectedDate = new Date(param.date);
-  const minDate = new Date("2000-01-01");
+  const minDate = new Date("2000-01-01T00:00:00+09:00"); // JST
   const maxDate = new Date();
   if (selectedDate < minDate || selectedDate > maxDate) {
-    throw new HTTPException(400, { message: "Date must be between 2000-01-01 and today." });
+    throw new HTTPException(400, { message: "Date must be between 2000-01-01 (JST) and today." });
   }
 
   // 体調のバリデーション（1から5の範囲か確認）
@@ -220,7 +220,7 @@ app.post("/api/resister", async (c) => {
   return c.json({ message: "Record successfully created." });
 });
 
-app.get("/api/register", async (c) => {
+app.get("/api/records", async (c) => {
   // JWTからユーザーIDを取得
   const token = getCookie(c, COOKIE_NAME);
   if (!token) {
