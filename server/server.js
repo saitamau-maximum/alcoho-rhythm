@@ -284,6 +284,11 @@ app.put("/api/records/:id", async (c) => {
     throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
   }
 
+  // 体調のバリデーション（1から5の範囲か確認）
+  if (param.condition < 1 || param.condition > 5) {
+    throw new HTTPException(400, { message: "condition must be between 1 and 5." });
+  }
+
   const token = getCookie(c, COOKIE_NAME);
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
