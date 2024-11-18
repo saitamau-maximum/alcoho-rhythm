@@ -233,6 +233,10 @@ app.post("/api/records", async (c) => {
     throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
   }
 
+  if (param.amount < 0) {
+    throw new HTTPException(400, { message: "amount must be greater than or equal to 0." });
+  }
+
   // 体調のバリデーション（1から5の範囲か確認）
   if (param.condition < 1 || param.condition > 5) {
     throw new HTTPException(400, { message: "condition must be between 1 and 5." });
@@ -287,6 +291,10 @@ app.put("/api/records/:id", async (c) => {
   // 体調のバリデーション（1から5の範囲か確認）
   if (param.condition < 1 || param.condition > 5) {
     throw new HTTPException(400, { message: "condition must be between 1 and 5." });
+  }
+
+  if (param.amount < 0) {
+    throw new HTTPException(400, { message: "amount must be greater than or equal to 0." });
   }
 
   const token = getCookie(c, COOKIE_NAME);
