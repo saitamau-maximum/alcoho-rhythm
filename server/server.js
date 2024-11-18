@@ -168,12 +168,12 @@ app.get("/api/records", async (c) => {
   const param = await c.req.json();
 
   if (!param.start || !param.end) {
-    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" are required." });
+    throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" are required." });
   }
 
   // 型バリデーション
   if (typeof param.start !== "string" || typeof param.end !== "string") {
-    throw new HTTPException(400, { message: "parameters \"start\" and \"end\" must be string." });
+    throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" must be string." });
   }
 
   const token = getCookie(c, COOKIE_NAME);
