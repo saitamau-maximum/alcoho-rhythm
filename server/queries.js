@@ -23,6 +23,10 @@ const DrinkingRecords = {
       FOREIGN KEY (user_id) REFERENCES users(id)
     );`,
   create: `INSERT INTO drinking_records (user_id, alcohol_amount, condition, date, updated_at) VALUES (?, ?, ?, strftime('%s', ?), strftime('%s', ?))`,
+  findById: `SELECT * FROM drinking_records WHERE id = ?`,
+  findByUserIdAndDateRange: `SELECT * FROM drinking_records WHERE user_id = ? AND date BETWEEN strftime('%s', ?) AND strftime('%s', ?)`,
+  update: `UPDATE drinking_records SET alcohol_amount = ?, condition = ?, date = strftime('%s', ?), updated_at = strftime('%s', ?) WHERE id = ?`,
+  delete: `DELETE FROM drinking_records WHERE id = ?`,
 };
 
 const queries = { Users, DrinkingRecords };

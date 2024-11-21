@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
-import { deleteCookie, setCookie } from "hono/cookie";
+import { deleteCookie, setCookie, getCookie } from "hono/cookie";
 import bcrypt from "bcrypt";
-import { SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import dotenv from "dotenv";
 import Database from "better-sqlite3";
 import queries from "./queries.js";
@@ -63,6 +63,21 @@ const validatePassword = (password) => {
   }
 };
 
+const getUserIdFromJwt = async (token, jwtSecret) => {
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(jwtSecret);
+  let userId;
+
+  try {
+    const { payload } = await jwtVerify(token, secretKey);
+    userId = payload.userId; // ユーザーIDを抽出
+  } catch {
+    throw new HTTPException(401, { message: "Invalid or expired token." });
+  }
+
+  return userId;
+};
+
 app.get("/api/hello", (c) => {
   return c.json({ message: "Hello, Alcoho-Rhythm server!" });
 });
@@ -93,7 +108,7 @@ app.post("/api/signup", async (c) => {
     if (error.message.includes("UNIQUE constraint failed")) {
       throw new HTTPException(400, { message: "This email already exist." });
     } else {
-      throw new HTTPException(500, { message: "Database error" });
+      throw error;
     }
   }
 
@@ -149,6 +164,196 @@ app.post("/api/signin", async (c) => {
 app.get("/api/signout", (c) => {
   deleteCookie(c, COOKIE_NAME);
   return c.json({ message: "Successfully signed out." });
+});
+
+app.get("/api/records", async (c) => {
+  const param = await c.req.json();
+
+  if (!param.start || !param.end) {
+    throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" are required." });
+  }
+
+  // 型バリデーション
+  if (typeof param.start !== "string" || typeof param.end !== "string") {
+    throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" must be string." });
+  }
+
+  const token = getCookie(c, COOKIE_NAME);
+
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  // UTCに変換してからデータベースから取得
+  const utcStart = new Date(param.start).toISOString();
+  const utcEnd = new Date(param.end).toISOString();
+
+  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
+
+  return c.json(records);
+});
+
+// 飲酒量記録のエンドポイント
+app.post("/api/records", async (c) => {
+  const param = await c.req.json();
+
+  // パラメータが存在するか確認
+  if (!param.date || !param.amount || !param.condition) {
+    throw new HTTPException(400, { message: "date, amount, and condition are required." });
+  }
+
+  // 型バリデーション
+  if (typeof param.date !== "string") {
+    throw new HTTPException(400, { message: "date must be a string." });
+  }
+
+  if (typeof param.amount !== "number") {
+    throw new HTTPException(400, { message: "amount must be a number." });
+  }
+
+  if (typeof param.condition !== "number") {
+    throw new HTTPException(400, { message: "condition must be a number." });
+  }
+
+  // JWTからユーザーIDを取得
+  const token = getCookie(c, COOKIE_NAME);
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+
+  // JSTで日付のバリデーション
+  const selectedDate = new Date(param.date);
+
+  const minDateJst = new Date("2000-01-01T00:00:00Z");
+
+  const nowDateJst = new Date();
+  nowDateJst.setHours(nowDateJst.getHours() + 9); // JSTとして解釈するために時差を足す
+
+  if (selectedDate < minDateJst || selectedDate > nowDateJst) {
+    throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
+  }
+
+  if (param.amount < 0) {
+    throw new HTTPException(400, { message: "amount must be greater than or equal to 0." });
+  }
+
+  // 体調のバリデーション（1から5の範囲か確認）
+  if (param.condition < 1 || param.condition > 5) {
+    throw new HTTPException(400, { message: "condition must be between 1 and 5." });
+  }
+
+  // DBにはUNIX時間で保存するため、UTCで現在時刻を取得
+  const nowDateUtcStr = new Date().toISOString();
+
+  db.prepare(queries.DrinkingRecords.create).run(
+    userId,
+    param.amount,
+    param.condition,
+    nowDateUtcStr,
+    nowDateUtcStr,
+  );
+
+  return c.json({ message: "Record successfully created." });
+});
+
+app.put("/api/records/:id", async (c) => {
+  const param = await c.req.json();
+  const id = c.req.param("id");
+
+  if (!param.amount && !param.condition) {
+    throw new HTTPException(400, { message: "amount or condition is required." });
+  }
+
+  if (param.amount && typeof param.amount !== "number") {
+    throw new HTTPException(400, { message: "amount must be a number." });
+  }
+
+  if (param.condition && typeof param.condition !== "number") {
+    throw new HTTPException(400, { message: "condition must be a number." });
+  }
+
+  if (param.date && typeof param.date !== "string") {
+    throw new HTTPException(400, { message: "date must be a string." });
+  }
+
+  // JSTで日付のバリデーション
+  const selectedDate = new Date(param.date);
+
+  const minDateJst = new Date("2000-01-01T00:00:00Z");
+
+  const nowDateJst = new Date();
+  nowDateJst.setHours(nowDateJst.getHours() + 9); // JSTとして解釈するために時差を足す
+
+  if (selectedDate < minDateJst || selectedDate > nowDateJst) {
+    throw new HTTPException(400, { message: "date must be between 2000-01-01 (JST) and today." });
+  }
+
+  // 体調のバリデーション（1から5の範囲か確認）
+  if (param.condition < 1 || param.condition > 5) {
+    throw new HTTPException(400, { message: "condition must be between 1 and 5." });
+  }
+
+  if (param.amount < 0) {
+    throw new HTTPException(400, { message: "amount must be greater than or equal to 0." });
+  }
+
+  const token = getCookie(c, COOKIE_NAME);
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+
+  const record = db.prepare(queries.DrinkingRecords.findById).get(id);
+
+  if (!record) {
+    throw new HTTPException(404, { message: "Record not found." });
+  }
+
+  // drinking_records.user_id と JWTのユーザーIDが一致するか確認
+  if (record.user_id !== userId) {
+    throw new HTTPException(403, { message: "Forbidden" });
+  }
+
+  const nowDateUtcStr = new Date().toISOString();
+
+  db.prepare(queries.DrinkingRecords.update)
+    .run(
+      param.amount || record.alcohol_amount,
+      param.condition || record.condition,
+      param.date || record.date,
+      nowDateUtcStr,
+      id
+    );
+
+  return c.json({ message: "Record successfully updated." });
+});
+
+app.delete("/api/records/:id", async (c) => {
+  const id = c.req.param("id");
+
+  const token = getCookie(c, COOKIE_NAME);
+  if (!token) {
+    throw new HTTPException(401, { message: "Unauthorized" });
+  }
+
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+
+  const record = db.prepare(queries.DrinkingRecords.findById).get(id);
+
+  if (!record) {
+    throw new HTTPException(404, { message: "Record not found." });
+  }
+
+  if (record.user_id !== userId) {
+    throw new HTTPException(403, { message: "Forbidden" });
+  }
+
+  db.prepare(queries.DrinkingRecords.delete).run(id);
+
+  return c.json({ message: "Record successfully deleted." });
 });
 
 app.onError((err, c) => {
