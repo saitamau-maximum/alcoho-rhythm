@@ -9,6 +9,9 @@ function Register() {
   const [dateError, setDateError] = useState(false);
   const [conditionError, setConditionError] = useState(false);
 
+  // エラーメッセージの状態を追加
+  const [errorMessage, setErrorMessage] = useState("");
+
   // アルコール数量の状態を管理するstate
   const [alcoholQuantities, setAlcoholQuantities] = useState({
     beer350: 0,
@@ -60,16 +63,27 @@ function Register() {
     const alcoholData = [
       { quantity: alcoholQuantities.beer350, volume: 350, percentage: 0.05 },
       { quantity: alcoholQuantities.beer500, volume: 500, percentage: 0.05 },
-      { quantity: alcoholQuantities.highball350, volume: 350, percentage: 0.07 },
-      { quantity: alcoholQuantities.highball500, volume: 500, percentage: 0.07 },
+      {
+        quantity: alcoholQuantities.highball350,
+        volume: 350,
+        percentage: 0.07,
+      },
+      {
+        quantity: alcoholQuantities.highball500,
+        volume: 500,
+        percentage: 0.07,
+      },
       { quantity: alcoholQuantities.wine, volume: 120, percentage: 0.12 },
       { quantity: alcoholQuantities.sake, volume: 180, percentage: 0.15 },
       { quantity: alcoholQuantities.shochu, volume: 100, percentage: 0.25 },
       { quantity: alcoholQuantities.whiskey, volume: 30, percentage: 0.4 },
     ];
-    const total = alcoholData.reduce((acc, { quantity, volume, percentage }) => {
-      return acc + quantity * volume * percentage;
-    }, 0);
+    const total = alcoholData.reduce(
+      (acc, { quantity, volume, percentage }) => {
+        return acc + quantity * volume * percentage;
+      },
+      0,
+    );
     return total;
   };
 
@@ -94,12 +108,18 @@ function Register() {
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error("データの送信に失敗しました");
+            // サーバーからのエラーメッセージを取得
+            return response.json().then((data) => {
+              throw new Error(data.message || "データの送信に失敗しました");
+            });
           }
+          // エラーメッセージをクリア
+          setErrorMessage("");
           navigate("/dashboard");
         })
         .catch((error) => {
           console.error(error);
+          setErrorMessage(error.message);
         });
     }
   };
@@ -350,6 +370,9 @@ function Register() {
           <p className="error-message">体調を選択してください。</p>
         )}
       </div>
+
+      {/* エラーメッセージを表示 */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       {/* 登録ボタン */}
       <div className="submit-button">
