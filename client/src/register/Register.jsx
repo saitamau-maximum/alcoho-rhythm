@@ -9,6 +9,18 @@ function Register() {
   const [dateError, setDateError] = useState(false);
   const [conditionError, setConditionError] = useState(false);
 
+  // アルコール数量の状態を管理するstate
+  const [alcoholQuantities, setAlcoholQuantities] = useState({
+    beer350: 0,
+    beer500: 0,
+    highball350: 0,
+    highball500: 0,
+    wine: 0,
+    sake: 0,
+    shochu: 0,
+    whiskey: 0,
+  });
+
   const navigate = useNavigate();
 
   // 今日の日付を取得してフォーマットする関数
@@ -43,11 +55,61 @@ function Register() {
     setConditionError(false);
   };
 
+  // アルコール量を計算する関数
+  const computeTotalAlcohol = () => {
+    const {
+      beer350,
+      beer500,
+      highball350,
+      highball500,
+      wine,
+      sake,
+      shochu,
+      whiskey,
+    } = alcoholQuantities;
+
+    let total = 0;
+
+    total += beer350 * 350 * 0.05 ;
+    total += beer500 * 500 * 0.05 ;
+    total += highball350 * 350 * 0.07 ;
+    total += highball500 * 500 * 0.07 ;
+    total += wine * 120 * 0.12 ;
+    total += sake * 180 * 0.15 ;
+    total += shochu * 100 * 0.25 ;
+    total += whiskey * 30 * 0.40 ;
+
+    return total; // 純アルコール量
+  };
+
   // 登録ボタンのクリック処理
   const handleSubmit = () => {
     if (!dateError && selectedDate !== "" && selectedCondition !== null) {
-      // ダッシュボードにリダイレクト
-      navigate("/dashboard");
+      const totalAlcoholAmount = computeTotalAlcohol();
+
+      const data = {
+        date: selectedDate,
+        amount: totalAlcoholAmount,
+        condition: selectedCondition,
+      };
+
+      fetch("/api/records", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("データの送信に失敗しました");
+          }
+          navigate("/dashboard");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
 
@@ -95,7 +157,19 @@ function Register() {
               </td>
               <td>5%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 缶
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.beer350}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      beer350: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                缶
               </td>
             </tr>
             <tr>
@@ -106,7 +180,19 @@ function Register() {
               </td>
               <td>5%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 缶
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.beer500}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      beer500: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                缶
               </td>
             </tr>
             <tr>
@@ -117,7 +203,19 @@ function Register() {
               </td>
               <td>7%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 缶
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.highball350}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      highball350: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                缶
               </td>
             </tr>
             <tr>
@@ -128,7 +226,19 @@ function Register() {
               </td>
               <td>7%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 缶
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.highball500}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      highball500: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                缶
               </td>
             </tr>
             <tr>
@@ -139,7 +249,19 @@ function Register() {
               </td>
               <td>12%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 杯
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.wine}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      wine: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                杯
               </td>
             </tr>
             <tr>
@@ -150,7 +272,19 @@ function Register() {
               </td>
               <td>15%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 合
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.sake}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      sake: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                合
               </td>
             </tr>
             <tr>
@@ -161,7 +295,19 @@ function Register() {
               </td>
               <td>25%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 杯
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.shochu}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      shochu: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                杯
               </td>
             </tr>
             <tr>
@@ -172,7 +318,19 @@ function Register() {
               </td>
               <td>40%</td>
               <td>
-                <input type="number" min="0" placeholder="0" /> 杯
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={alcoholQuantities.whiskey}
+                  onChange={(e) =>
+                    setAlcoholQuantities({
+                      ...alcoholQuantities,
+                      whiskey: Number(e.target.value),
+                    })
+                  }
+                />{" "}
+                杯
               </td>
             </tr>
           </tbody>
