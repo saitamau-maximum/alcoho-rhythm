@@ -93,7 +93,7 @@ function Register() {
         condition: selectedCondition,
       };
 
-      fetch("/api/records", {
+      fetch("http://localhost:8000/api/records", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
