@@ -6,7 +6,7 @@ function Register() {
   // 状態管理
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
-  const [dateError, setDateError] = useState(false);
+  const [isDateValid, setIsDateValid] = useState(false);
   const [conditionError, setConditionError] = useState(false);
 
   // エラーメッセージの状態を追加
@@ -46,9 +46,9 @@ function Register() {
     const selected = new Date(date);
 
     if (selected >= minDate && selected <= maxDate) {
-      setDateError(false);
+      setIsDateValid(true);
     } else {
-      setDateError(true);
+      setIsDateValid(false);
     }
   };
 
@@ -89,7 +89,7 @@ function Register() {
 
   // 登録ボタンのクリック処理
   const handleSubmit = () => {
-    if (!dateError && selectedDate !== "" && selectedCondition !== null) {
+    if (isDateValid && selectedCondition !== null) {
       const totalAlcoholAmount = computeTotalAlcohol();
 
       const data = {
@@ -125,8 +125,7 @@ function Register() {
   };
 
   // ボタンの無効化
-  const isButtonDisabled =
-    dateError || selectedDate === "" || selectedCondition === null;
+  const isButtonDisabled = !isDateValid || selectedCondition === null;
 
   return (
     <div className="register-container">
@@ -141,7 +140,7 @@ function Register() {
           value={selectedDate}
           onChange={handleDateChange}
         />
-        {dateError && (
+        {!isDateValid && (
           <p className="error-message">
             2000年1月1日から今日までの日付を選択できます。
           </p>
