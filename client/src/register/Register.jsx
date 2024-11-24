@@ -57,29 +57,20 @@ function Register() {
 
   // アルコール量を計算する関数
   const computeTotalAlcohol = () => {
-    const {
-      beer350,
-      beer500,
-      highball350,
-      highball500,
-      wine,
-      sake,
-      shochu,
-      whiskey,
-    } = alcoholQuantities;
-
-    let total = 0;
-
-    total += beer350 * 350 * 0.05;
-    total += beer500 * 500 * 0.05;
-    total += highball350 * 350 * 0.07;
-    total += highball500 * 500 * 0.07;
-    total += wine * 120 * 0.12;
-    total += sake * 180 * 0.15;
-    total += shochu * 100 * 0.25;
-    total += whiskey * 30 * 0.4;
-
-    return total; // 純アルコール量
+    const alcoholData = [
+      { quantity: alcoholQuantities.beer350, volume: 350, percentage: 0.05 },
+      { quantity: alcoholQuantities.beer500, volume: 500, percentage: 0.05 },
+      { quantity: alcoholQuantities.highball350, volume: 350, percentage: 0.07 },
+      { quantity: alcoholQuantities.highball500, volume: 500, percentage: 0.07 },
+      { quantity: alcoholQuantities.wine, volume: 120, percentage: 0.12 },
+      { quantity: alcoholQuantities.sake, volume: 180, percentage: 0.15 },
+      { quantity: alcoholQuantities.shochu, volume: 100, percentage: 0.25 },
+      { quantity: alcoholQuantities.whiskey, volume: 30, percentage: 0.4 },
+    ];
+    const total = alcoholData.reduce((acc, { quantity, volume, percentage }) => {
+      return acc + quantity * volume * percentage;
+    }, 0);
+    return total;
   };
 
   // 登録ボタンのクリック処理
