@@ -70,14 +70,14 @@ function Register() {
 
     let total = 0;
 
-    total += beer350 * 350 * 0.05 ;
-    total += beer500 * 500 * 0.05 ;
-    total += highball350 * 350 * 0.07 ;
-    total += highball500 * 500 * 0.07 ;
-    total += wine * 120 * 0.12 ;
-    total += sake * 180 * 0.15 ;
-    total += shochu * 100 * 0.25 ;
-    total += whiskey * 30 * 0.40 ;
+    total += beer350 * 350 * 0.05;
+    total += beer500 * 500 * 0.05;
+    total += highball350 * 350 * 0.07;
+    total += highball500 * 500 * 0.07;
+    total += wine * 120 * 0.12;
+    total += sake * 180 * 0.15;
+    total += shochu * 100 * 0.25;
+    total += whiskey * 30 * 0.4;
 
     return total; // 純アルコール量
   };
@@ -98,7 +98,7 @@ function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(data),
       })
         .then((response) => {
