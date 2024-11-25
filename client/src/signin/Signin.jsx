@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signin } from "../signin";
 
 function Signin() {
   const [email, setEmail] = useState("");
@@ -28,25 +29,8 @@ function Signin() {
     }
 
     try {
-      const response = await fetch("http:/localhost:8000/api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // エラーメッセージを表示
-        setMessage(data.error || "An error occurred.");
-      } else {
-        // 成功メッセージを表示またはリダイレクト
-        setMessage("Successfully signed in.");
-        // 必要に応じて、ダッシュボードやホームにリダイレクトなど
-        navigate("/dashboard");
-      }
+      await signin(email, password);
+      navigate("/");
     } catch (error) {
       console.error("Error signing in:", error);
       setMessage("An error occurred. Please try again.");
