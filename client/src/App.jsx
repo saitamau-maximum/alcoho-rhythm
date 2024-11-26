@@ -5,12 +5,13 @@ import Signin from "./signin/Signin";
 import Register from "./register/Register";
 import Signup from "./signup/Signup";
 
-
 function isAuthenticated() {
-  return document.cookie.split(';').some((item) => item.trim().startsWith('token='));
+  return document.cookie
+    .split(";")
+    .some((item) => item.trim().startsWith("token="));
 }
 
-function PrivateRoute({ children }) {
+function AuthenticatedRoute({ children }) {
   return isAuthenticated() ? children : <Navigate to="/signin" replace />;
 }
 
@@ -18,24 +19,23 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
-        <Link to="/dashboard">Dashboard</Link> |{" "}
-        <Link to="/register">Register</Link>
+          <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
+          <Link to="/dashboard">Dashboard</Link> | <Link to="/register">Register</Link>
         <Routes>
           <Route
             path="/"
             element={
-              <PrivateRoute>
+              <AuthenticatedRoute>
                 <Dashboard />
-              </PrivateRoute>
+              </AuthenticatedRoute>
             }
           />
           <Route
             path="/dashboard"
             element={
-              <PrivateRoute>
+              <AuthenticatedRoute>
                 <Dashboard />
-              </PrivateRoute>
+              </AuthenticatedRoute>
             }
           />
           <Route path="/signin" element={<Signin />} />
