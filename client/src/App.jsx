@@ -17,19 +17,28 @@ function App() {
       <BrowserRouter>
         <nav>
           <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
-          <Link to="/dashboard">Dashboard</Link> | <Link to="/register">Register</Link>
+          <Link to="/dashboard">Dashboard</Link> |{" "}
+          <Link to="/register">Register</Link>
         </nav>
         <Routes>
           <Route
             path="/"
             element={
-              isAuthenticated() ? <Dashboard /> : <Navigate to="/signin" replace />
+              isAuthenticated() ? (
+                <Dashboard />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
             }
           />
           <Route
             path="/dashboard"
             element={
-              isAuthenticated() ? <Dashboard /> : <Navigate to="/signin" replace />
+              isAuthenticated() ? (
+                <Dashboard />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
             }
           />
           <Route path="/signin" element={<Signin />} />
