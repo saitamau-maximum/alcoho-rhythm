@@ -26,25 +26,6 @@ function Register() {
 
   const navigate = useNavigate();
 
-  // 認証チェックを追加
-  useEffect(() => {
-    // 認証が必要なエンドポイントにリクエストを送信
-    fetch("http://localhost:8000/api/records/check", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          // 未認証の場合はサインインページにリダイレクト
-          navigate("/signin");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        navigate("/signin");
-      });
-  }, [navigate]);
-
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
     const today = new Date();

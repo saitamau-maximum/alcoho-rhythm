@@ -41,9 +41,18 @@ function App() {
               )
             }
           />
+          <Route
+            path="/register"
+            element={
+              isAuthenticated() ? (
+                <Register />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
+            }
+          />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/register" element={<Register />} />
           <Route path="*" element={<h1>Not Found Page</h1>} />
         </Routes>
       </BrowserRouter>
