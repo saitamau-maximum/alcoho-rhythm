@@ -11,31 +11,25 @@ function isAuthenticated() {
     .some((item) => item.trim().startsWith("token="));
 }
 
-function AuthenticatedRoute({ children }) {
-  return isAuthenticated() ? children : <Navigate to="/signin" replace />;
-}
-
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <nav>
           <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
           <Link to="/dashboard">Dashboard</Link> | <Link to="/register">Register</Link>
+        </nav>
         <Routes>
           <Route
             path="/"
             element={
-              <AuthenticatedRoute>
-                <Dashboard />
-              </AuthenticatedRoute>
+              isAuthenticated() ? <Dashboard /> : <Navigate to="/signin" replace />
             }
           />
           <Route
             path="/dashboard"
             element={
-              <AuthenticatedRoute>
-                <Dashboard />
-              </AuthenticatedRoute>
+              isAuthenticated() ? <Dashboard /> : <Navigate to="/signin" replace />
             }
           />
           <Route path="/signin" element={<Signin />} />
