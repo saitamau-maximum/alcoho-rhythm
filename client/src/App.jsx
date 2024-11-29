@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes, Link, Navigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
@@ -5,12 +6,32 @@ import Signin from "./signin/Signin";
 import Register from "./register/Register";
 import Signup from "./signup/Signup";
 
-function isAuthenticated() {
-  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-  return cookies.some((cookie) => cookie.startsWith("token="));
+// 認証状態を管理
+function useAuth() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+      const authenticated = cookies.some((cookie) =>
+        cookie.startsWith("token="),
+      );
+      setIsAuthenticated(authenticated);
+    };
+
+    checkAuth();
+
+    // クッキーの変更を監視
+    const interval = setInterval(checkAuth, 1000); // 1秒ごとにチェック
+    return () => clearInterval(interval);
+  }, []);
+
+  return isAuthenticated;
 }
 
 function App() {
+  const isAuthenticated = useAuth();
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -23,7 +44,7 @@ function App() {
           <Route
             path="/"
             element={
-              isAuthenticated() ? (
+              isAuthenticated ? (
                 <Dashboard />
               ) : (
                 <Navigate to="/signin" replace />
@@ -33,7 +54,7 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              isAuthenticated() ? (
+              isAuthenticated ? (
                 <Dashboard />
               ) : (
                 <Navigate to="/signin" replace />
@@ -43,11 +64,7 @@ function App() {
           <Route
             path="/register"
             element={
-              isAuthenticated() ? (
-                <Register />
-              ) : (
-                <Navigate to="/signin" replace />
-              )
+              isAuthenticated ? <Register /> : <Navigate to="/signin" replace />
             }
           />
           <Route path="/signin" element={<Signin />} />
