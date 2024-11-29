@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, Link, Navigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Signin from "./signin/Signin";
 import Register from "./register/Register";
-import Signup from "./signup/Signup"
+import Signup from "./signup/Signup";
 
 // 認証状態を管理
 function useAuth() {
