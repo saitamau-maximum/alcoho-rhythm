@@ -6,9 +6,8 @@ import Register from "./register/Register";
 import Signup from "./signup/Signup";
 
 function isAuthenticated() {
-  return document.cookie
-    .split(";")
-    .some((item) => item.trim().startsWith("token="));
+  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+  return cookies.some((cookie) => cookie.startsWith("token="));
 }
 
 function App() {
