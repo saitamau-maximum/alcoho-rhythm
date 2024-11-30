@@ -251,7 +251,7 @@ app.post("/api/records", async (c) => {
 
   // DBにはUNIX時間で保存するため、UTCで現在時刻を取得
   const nowDateUtcStr = new Date().toISOString();
-  const selectedDateStr = new Date().toISOString();
+  const selectedDateStr = new selectedDate.toISOString();
 
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
