@@ -185,7 +185,7 @@ app.get("/api/records", async (c) => {
   }
 
   const userId = await getUserIdFromJwt(token, JWT_SECRET);
-  if (typeof userId === "number") {
+  if (typeof userId !== "number") {
     throw new HTTPException(401, { message: "User ID is not an integer" });
   }
 
