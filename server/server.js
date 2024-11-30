@@ -167,14 +167,15 @@ app.get("/api/signout", (c) => {
 });
 
 app.get("/api/records", async (c) => {
-  const param = await c.req.json();
+  const start = c.req.query("start");
+  const end = c.req.query("end");
 
-  if (!param.start || !param.end) {
+  if (!start || !end) {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" are required." });
   }
 
   // 型バリデーション
-  if (typeof param.start !== "string" || typeof param.end !== "string") {
+  if (typeof start !== "string" || typeof end !== "string") {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" must be string." });
   }
 
@@ -190,8 +191,8 @@ app.get("/api/records", async (c) => {
   }
 
   // UTCに変換してからデータベースから取得
-  const utcStart = new Date(param.start).toISOString();
-  const utcEnd = new Date(param.end).toISOString();
+  const utcStart = new Date(start).toISOString();
+  const utcEnd = new Date(end).toISOString();
 
   const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
 
