@@ -21,7 +21,7 @@ function useAuth() {
     checkAuth();
 
     // クッキーの変更を監視
-    const interval = setInterval(checkAuth, 1000); // 1秒ごとにチェック
+    const interval = setInterval(checkAuth, 3000); // 1秒ごとにチェック
     return () => clearInterval(interval);
   }, []);
 
