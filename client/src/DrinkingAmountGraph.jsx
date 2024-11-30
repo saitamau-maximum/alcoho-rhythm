@@ -32,15 +32,11 @@ function DrinkingAmountGraph({ fetchedData }) {
       },
     ],
   });
-
+  
   useEffect(() => {
     const drinkingAmountPerDay = countDrinkingAmount(fetchedData);
-
-    console.log(drinkingAmountPerDay);
-
     // 1〜31の日付をラベルとして設定
     const labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
-
     // グラフデータの更新
     setData({
       labels: labels,

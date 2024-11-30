@@ -4,8 +4,8 @@ import DrinkingAmountGraph from "./DrinkingAmountGraph";
 function Dashboard() {
   const [fetchedData, setFetchedData] = useState([]);
   const fetchData = async () => {
-    const response = await fetch("http://localhost:8000/api/recordsTest", {
-      method: "POST",
+    const response = await fetch("http://localhost:8000/api/records", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },

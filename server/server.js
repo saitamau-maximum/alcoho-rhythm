@@ -168,7 +168,7 @@ app.get("/api/signout", (c) => {
 
 // TODO: postからgetに変更する（ボディを消してクエリパラメータにする）
 // apiの名前がかぶってしまうから一時的にrecordsTestにしている
-app.post("/api/recordsTest", async (c) => {
+app.get("/api/records", async (c) => {
   const param = await c.req.json();
 
   if (!param.start || !param.end) {
@@ -192,12 +192,8 @@ app.post("/api/recordsTest", async (c) => {
   const utcStart = new Date(param.start).toISOString();
   const utcEnd = new Date(param.end).toISOString();
 
-  console.log("utcStart: ", utcStart);
-  console.log("utcEnd: ", utcEnd);
-  console.log("userId: ", userId);
-
   const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(
-    Number(userId), String(utcStart), String(utcEnd)
+    userId, utcStart, utcEnd
   );
 
   return c.json(records);
