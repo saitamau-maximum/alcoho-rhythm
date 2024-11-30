@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import DrinkingAmountGraph from "./DrinkingAmountGraph";
-import DrinkingCount from "./DrinkingCount";
-import ConditionDist from "./ConditionDist";
-import ConditionAvg from "./ConditionAvg";
+import DrinkingAmountGraph from "./components/DrinkingAmountGraph";
+import ConditionAvg from "./components/ConditionAvg";
+import ConditionDist from "./components/ConditionDist";
+import DrinkingCount from "./components/DrinkingCount";
 
 function Dashboard() {
   const [fetchedData, setFetchedData] = useState([]);
   const fetchData = async () => {
     const response = await fetch("http://localhost:8000/api/recordsTmp", {
-      method: "POST",
+      method: "POST",//実際はGET
       headers: {
         "Content-Type": "application/json",
       },
@@ -30,9 +30,9 @@ function Dashboard() {
 
   return (
     <div>
-      <DrinkingAmountGraph fetchedData={fetchedData}/>
+      <DrinkingAmountGraph fetchedData={fetchedData} month={month}/>
       <DrinkingCount fetchedData={fetchedData} />
-      <ConditionAvg fetchedData={fetchedData} /> 
+      <ConditionAvg fetchedData={fetchedData} />
       <ConditionDist fetchedData={fetchedData}/>
     </div>
   );

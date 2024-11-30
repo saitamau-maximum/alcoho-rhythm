@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { countDrinkingAmount } from "./countDrinkingAmount";
+import { countDrinkingAmount } from "../countDrinkingAmount";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -20,7 +20,7 @@ ChartJS.register(
   Legend,
 );
 
-function DrinkingAmountGraph({ fetchedData }) {
+function DrinkingAmountGraph({ fetchedData, month }) {
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -34,7 +34,7 @@ function DrinkingAmountGraph({ fetchedData }) {
   });
   
   useEffect(() => {
-    const drinkingAmountPerDay = countDrinkingAmount(fetchedData);
+    const drinkingAmountPerDay = countDrinkingAmount(fetchedData, month);
     // 1〜31の日付をラベルとして設定
     const labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
     // グラフデータの更新

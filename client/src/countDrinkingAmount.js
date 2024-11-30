@@ -1,4 +1,5 @@
-export const countDrinkingAmount = (drinkingDataForMonth) => {
+export const countDrinkingAmount = (drinkingDataForMonth, month) => {
+  
   // TODO: すべての月が31日になってしまうため月ごとに変更する
   const drinkingAmounts = new Array(31).fill(0); 
 
