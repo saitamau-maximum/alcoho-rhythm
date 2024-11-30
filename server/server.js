@@ -184,6 +184,11 @@ app.get("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+  if (typeof userId === "number") {
+    throw new HTTPException(401, { message: "User ID is not an integer" });
+  }
+
   // UTCに変換してからデータベースから取得
   const utcStart = new Date(param.start).toISOString();
   const utcEnd = new Date(param.end).toISOString();
@@ -246,12 +251,13 @@ app.post("/api/records", async (c) => {
 
   // DBにはUNIX時間で保存するため、UTCで現在時刻を取得
   const nowDateUtcStr = new Date().toISOString();
+  const selectedDateStr = new Date().toISOString();
 
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
     param.amount,
     param.condition,
-    nowDateUtcStr,
+    selectedDateStr,
     nowDateUtcStr,
   );
 
