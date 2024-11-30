@@ -166,9 +166,9 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
-// TODO: postからgetに変更する（ボディを消してクエリパラメータにする）
-// apiの名前がかぶってしまうから一時的にrecordsTestにしている
-app.get("/api/records", async (c) => {
+// TODO: postからgetに変更する（ボディを消してクエリパラメータにする
+// HACK: apiの名前がかぶってしまうから一時的にrecordsTmpにしている
+app.post("/api/recordsTmp", async (c) => {
   const param = await c.req.json();
 
   if (!param.start || !param.end) {

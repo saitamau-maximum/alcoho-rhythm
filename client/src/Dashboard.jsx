@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import DrinkingAmountGraph from "./DrinkingAmountGraph";
+import DrinkingCount from "./DrinkingCount";
+import ConditionDist from "./ConditionDist";
+import ConditionAvg from "./ConditionAvg";
 
 function Dashboard() {
   const [fetchedData, setFetchedData] = useState([]);
   const fetchData = async () => {
-    const response = await fetch("http://localhost:8000/api/records", {
-      method: "GET",
+    const response = await fetch("http://localhost:8000/api/recordsTmp", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -28,6 +31,9 @@ function Dashboard() {
   return (
     <div>
       <DrinkingAmountGraph fetchedData={fetchedData}/>
+      <DrinkingCount fetchedData={fetchedData} />
+      <ConditionAvg fetchedData={fetchedData} /> 
+      <ConditionDist fetchedData={fetchedData}/>
     </div>
   );
 }
