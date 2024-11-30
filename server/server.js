@@ -166,29 +166,39 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
-app.get("/api/records", async (c) => {
+// TODO: postからgetに変更する（ボディを消してクエリパラメータにする）
+// apiの名前がかぶってしまうから一時的にrecordsTestにしている
+app.post("/api/recordsTest", async (c) => {
   const param = await c.req.json();
 
   if (!param.start || !param.end) {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" are required." });
   }
 
-  // 型バリデーション
   if (typeof param.start !== "string" || typeof param.end !== "string") {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" must be string." });
   }
 
   const token = getCookie(c, COOKIE_NAME);
-
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
-  // UTCに変換してからデータベースから取得
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+  if (!Number.isInteger(userId)) {
+    throw new HTTPException(401, { message: "User ID is not an integer." });
+  }
+
   const utcStart = new Date(param.start).toISOString();
   const utcEnd = new Date(param.end).toISOString();
 
-  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
+  console.log("utcStart: ", utcStart);
+  console.log("utcEnd: ", utcEnd);
+  console.log("userId: ", userId);
+
+  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(
+    Number(userId), String(utcStart), String(utcEnd)
+  );
 
   return c.json(records);
 });
@@ -246,12 +256,13 @@ app.post("/api/records", async (c) => {
 
   // DBにはUNIX時間で保存するため、UTCで現在時刻を取得
   const nowDateUtcStr = new Date().toISOString();
+  const selectedDateStr = selectedDate.toISOString();
 
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
     param.amount,
     param.condition,
-    nowDateUtcStr,
+    selectedDateStr,
     nowDateUtcStr,
   );
 
