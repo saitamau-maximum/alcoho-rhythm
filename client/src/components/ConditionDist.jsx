@@ -25,7 +25,6 @@ function ConditionDist({ fetchedData }) {
 
   useEffect(() => {
     const conditionsData = [0, 0, 0, 0, 0];
-    console.log(fetchedData);
     fetchedData.forEach((data) => {
       conditionsData[data.condition - 1]++; //0インデックスにする
     });
@@ -38,7 +37,6 @@ function ConditionDist({ fetchedData }) {
         },
       ],
     });
-    console.log(conditionsData);
   }, [fetchedData]);
 
   const options = {

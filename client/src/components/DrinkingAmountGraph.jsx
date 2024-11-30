@@ -20,7 +20,7 @@ ChartJS.register(
   Legend,
 );
 
-function DrinkingAmountGraph({ fetchedData, month }) {
+function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -34,7 +34,7 @@ function DrinkingAmountGraph({ fetchedData, month }) {
   });
   
   useEffect(() => {
-    const drinkingAmountPerDay = countDrinkingAmount(fetchedData, month);
+    const drinkingAmountPerDay = countDrinkingAmount(fetchedData, daysInMonth);
     // 1〜31の日付をラベルとして設定
     const labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
     // グラフデータの更新

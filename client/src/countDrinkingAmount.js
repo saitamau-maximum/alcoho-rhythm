@@ -1,7 +1,7 @@
-export const countDrinkingAmount = (drinkingDataForMonth, month) => {
-  
+export const countDrinkingAmount = (drinkingDataForMonth, daysInMonth) => {
+
   // TODO: すべての月が31日になってしまうため月ごとに変更する
-  const drinkingAmounts = new Array(31).fill(0); 
+  const drinkingAmounts = new Array(daysInMonth).fill(0); 
 
   // 全データから日付ごとの飲酒量をカウント
   drinkingDataForMonth.forEach(data => {
