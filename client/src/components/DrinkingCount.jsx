@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 DrinkingCount.propTypes = {
   fetchedData: PropTypes.arrayOf(
     PropTypes.shape({
       condition: PropTypes.number.isRequired,
-    })
+    }),
   ).isRequired,
 };
 
@@ -14,9 +14,7 @@ function DrinkingCount({ fetchedData }) {
   useEffect(() => {
     setDrinkingCount(fetchedData.length);
   }, [fetchedData]);
-  return (
-    <div>飲酒回数: {drinkingCount}</div>
-  )
+  return <div>飲酒回数: {drinkingCount}</div>;
 }
 
 export default DrinkingCount;

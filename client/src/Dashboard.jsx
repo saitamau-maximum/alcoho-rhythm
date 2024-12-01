@@ -11,34 +11,33 @@ function Dashboard() {
   const [displayYear, setDisplayYear] = useState(nowYear);
   const [displayMonth, setDisplayMonth] = useState(nowMonth);
   const [fetchedData, setFetchedData] = useState([]);
-  const daysInMonth = new Date(displayYear, displayMonth+1, 0).getDate(); //monthは0-indexedであるため。dayが0は前月を表すらしい。
-
-  const fetchData = async () => {
-    const response = await fetch("http://localhost:8000/api/recordsTmp", {
-      //TODO: エンドポイント名を修正する
-      method: "POST", //実際はGET
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        start: `${displayYear}-${String(Number(displayMonth)+1)}-01`,
-        end: `${displayYear}-${String(Number(displayMonth)+1)}-${daysInMonth}`,
-      }),
-      credentials: "include", // Cookieを送信
-    });
-    const data = await response.json();
-    if (response.ok) {
-      //fetchしたデータを更新
-      setFetchedData(data);
-    } else {
-      console.log("failed to fetch data.");
-      setFetchedData(null);
-    }
-  };
+  const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate(); //monthは0-indexedであるため。dayが0は前月を表すらしい。
 
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:8000/api/recordsTmp", {
+        //TODO: エンドポイント名を修正する
+        method: "POST", //実際はGET
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          start: `${displayYear}-${String(Number(displayMonth) + 1)}-01`,
+          end: `${displayYear}-${String(Number(displayMonth) + 1)}-${daysInMonth}`,
+        }),
+        credentials: "include", // Cookieを送信
+      });
+      const data = await response.json();
+      if (response.ok) {
+        //fetchしたデータを更新
+        setFetchedData(data);
+      } else {
+        console.log("failed to fetch data.");
+        setFetchedData(null);
+      }
+    };
     fetchData();
-  }, [displayYear, displayMonth]);
+  }, [displayYear, displayMonth, daysInMonth]);
 
   const nextMonth = () => {
     const nextDate = new Date(displayYear, displayMonth + 1);
@@ -68,19 +67,19 @@ function Dashboard() {
     <div>
       <div>
         <button onClick={preMonth}>◀</button>
-        {`${displayYear}年${String(Number(displayMonth)+1)}月の体調データ`}
+        {`${displayYear}年${String(Number(displayMonth) + 1)}月の体調データ`}
         <button onClick={nextMonth}>▶</button>
       </div>
       {Array.isArray(fetchedData) ? (
-      <div>
-        <DrinkingAmountGraph
-          fetchedData={fetchedData}
-          daysInMonth={daysInMonth}
-        />
-        <DrinkingCount fetchedData={fetchedData} />
-        <ConditionAvg fetchedData={fetchedData} />
-        <ConditionDist fetchedData={fetchedData} />
-      </div>
+        <div>
+          <DrinkingAmountGraph
+            fetchedData={fetchedData}
+            daysInMonth={daysInMonth}
+          />
+          <DrinkingCount fetchedData={fetchedData} />
+          <ConditionAvg fetchedData={fetchedData} />
+          <ConditionDist fetchedData={fetchedData} />
+        </div>
       ) : (
         <p>データ取得に失敗しました。</p>
       )}

@@ -25,7 +25,7 @@ DrinkingAmountGraph.propTypes = {
   fetchedData: PropTypes.arrayOf(
     PropTypes.shape({
       condition: PropTypes.number.isRequired,
-    })
+    }),
   ).isRequired,
   daysInMonth: PropTypes.number.isRequired,
 };
@@ -42,7 +42,7 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
       },
     ],
   });
-  
+
   useEffect(() => {
     const drinkingAmountPerDay = countDrinkingAmount(fetchedData, daysInMonth);
     // 1〜31の日付をラベルとして設定
@@ -59,7 +59,7 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
         },
       ],
     });
-  }, [fetchedData]);
+  }, [fetchedData, daysInMonth]);
 
   const options = {
     responsive: true,
