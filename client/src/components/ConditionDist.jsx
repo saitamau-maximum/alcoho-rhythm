@@ -25,9 +25,11 @@ function ConditionDist({ fetchedData }) {
 
   useEffect(() => {
     const conditionsData = [0, 0, 0, 0, 0];
-    fetchedData.forEach((data) => {
-      conditionsData[data.condition - 1]++; //0インデックスにする
-    });
+    if (Array.isArray(fetchedData)) {
+      fetchedData.forEach((data) => {
+        conditionsData[data.condition - 1]++; //0インデックスにする
+      });
+    }
     setData({
       labels: [1, 2, 3, 4, 5], // ラベル
       datasets: [
