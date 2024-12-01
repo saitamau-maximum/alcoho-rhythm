@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { countDrinkingAmount } from "../countDrinkingAmount";
+import { countDrinkingAmount } from "../utils/countDrinkingAmount";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,

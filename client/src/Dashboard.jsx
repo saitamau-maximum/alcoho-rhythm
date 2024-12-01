@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import DrinkingAmountGraph from "./components/DrinkingAmountGraph";
 import ConditionAvg from "./components/ConditionAvg";
 import ConditionDist from "./components/ConditionDist";
-import DrinkingCount from "./components/DrinkingCount";
+import DrinkingState from "./components/DrinkingState";
+import LimitDrinkingAmountJudge from "./components/LimitDrinkingAmountJudge/LimitDrinkingAmountJudge";
 
 function Dashboard() {
   const now = new Date();
@@ -71,9 +72,10 @@ function Dashboard() {
             fetchedData={fetchedData}
             daysInMonth={daysInMonth}
           />
-          <DrinkingCount fetchedData={fetchedData} />
+          <DrinkingState fetchedData={fetchedData} />
           <ConditionAvg fetchedData={fetchedData} />
           <ConditionDist fetchedData={fetchedData} />
+          <LimitDrinkingAmountJudge />
         </div>
       ) : (
         <p>データ取得に失敗しました。</p>
