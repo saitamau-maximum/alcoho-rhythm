@@ -167,14 +167,15 @@ app.get("/api/signout", (c) => {
 });
 
 app.get("/api/records", async (c) => {
-  const param = await c.req.json();
+  const start = c.req.query("start");
+  const end = c.req.query("end");
 
-  if (!param.start || !param.end) {
+  if (!start || !end) {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" are required." });
   }
 
   // 型バリデーション
-  if (typeof param.start !== "string" || typeof param.end !== "string") {
+  if (typeof start !== "string" || typeof end !== "string") {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" must be string." });
   }
 
@@ -184,9 +185,14 @@ app.get("/api/records", async (c) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+  if (typeof userId !== "number") {
+    throw new HTTPException(401, { message: "User ID is not an integer" });
+  }
+
   // UTCに変換してからデータベースから取得
-  const utcStart = new Date(param.start).toISOString();
-  const utcEnd = new Date(param.end).toISOString();
+  const utcStart = new Date(start).toISOString();
+  const utcEnd = new Date(end).toISOString();
 
   const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
 
@@ -246,12 +252,13 @@ app.post("/api/records", async (c) => {
 
   // DBにはUNIX時間で保存するため、UTCで現在時刻を取得
   const nowDateUtcStr = new Date().toISOString();
+  const selectedDateStr = selectedDate.toISOString();
 
   db.prepare(queries.DrinkingRecords.create).run(
     userId,
     param.amount,
     param.condition,
-    nowDateUtcStr,
+    selectedDateStr,
     nowDateUtcStr,
   );
 
