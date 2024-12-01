@@ -16,7 +16,7 @@ function DrinkingCount({ fetchedData }) {
 
   useEffect(() => {
     const healthyDrinkingNum = fetchedData.filter(
-      (data) => data.condition <= 3,
+      (data) => data.condition <= 2,
     ).length;
     setHealthyDrinkingRate(
       ((healthyDrinkingNum / fetchedData.length) * 100 || 0).toFixed(0),
@@ -27,11 +27,11 @@ function DrinkingCount({ fetchedData }) {
     <div className="drinking-state-container">
       <div className="drinking-count-container">
         <h1>飲酒回数</h1>
-        <p>{drinkingCount}</p>
+        <p><span>{drinkingCount}</span>回</p>
       </div>
       <div className="healthy-drinking-rate-container">
         <h1>健康飲酒率</h1>
-        <p>{healthyDrinkingRate}%</p>
+        <p><span>{healthyDrinkingRate}</span>%</p>
       </div>
     </div>
   );

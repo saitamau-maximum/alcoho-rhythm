@@ -3,7 +3,8 @@ import DrinkingAmountGraph from "./components/DrinkingAmountGraph/DrinkingAmount
 import ConditionAvg from "./components/ConditionAvg/ConditionAvg";
 import ConditionDist from "./components/ConditionDist/ConditionDist";
 import DrinkingState from "./components/DrinkingState/DrinkingState";
-import LimitDrinkingAmountJudge from "./components/LimitDrinkingAmountJudge/LimitDrinkingAmountJudge";
+import LimitDrinkingAmountCalc from "./components/LimitDrinkingAmountCalc/LimitDrinkingAmountCalc";
+import "./Dashboard.css";
 
 function Dashboard() {
   const now = new Date();
@@ -68,21 +69,23 @@ function Dashboard() {
         {Number(displayMonth) + 2 === 13 ? 1 : Number(displayMonth) + 2}月
       </div>
       {Array.isArray(fetchedData) ? (
-        <div>
-          <div>
-            <div>
-              <ConditionAvg fetchedData={fetchedData} />
-              <DrinkingState fetchedData={fetchedData} />
+        <div className="container">
+          <div className="drinking-data-container">
+            <div className="left-container">
+              <div className="left-top-container">
+                <ConditionAvg fetchedData={fetchedData} />
+                <DrinkingState fetchedData={fetchedData} />
+              </div>
+              <DrinkingAmountGraph
+                fetchedData={fetchedData}
+                daysInMonth={daysInMonth}
+              />
             </div>
-            <DrinkingAmountGraph
-              fetchedData={fetchedData}
-              daysInMonth={daysInMonth}
-            />
+            <div>
+              <ConditionDist fetchedData={fetchedData} />
+            </div>
           </div>
-          <div>
-            <ConditionDist fetchedData={fetchedData} />
-          </div>
-          <LimitDrinkingAmountJudge />
+          <LimitDrinkingAmountCalc />
         </div>
       ) : (
         <p>データ取得に失敗しました。</p>
