@@ -27,8 +27,13 @@ function Dashboard() {
       credentials: "include", // Cookieを送信
     });
     const data = await response.json();
-    //fetchしたデータを更新
-    setFetchedData(data);
+    if (response.ok) {
+      //fetchしたデータを更新
+      setFetchedData(data);
+    } else {
+      console.log("failed to fetch data.");
+      setFetchedData(null);
+    }
   };
 
   useEffect(() => {
@@ -66,6 +71,7 @@ function Dashboard() {
         {`${displayYear}年${String(Number(displayMonth)+1)}月の体調データ`}
         <button onClick={nextMonth}>▶</button>
       </div>
+      {fetchedData ? (
       <div>
         <DrinkingAmountGraph
           fetchedData={fetchedData}
@@ -75,6 +81,9 @@ function Dashboard() {
         <ConditionAvg fetchedData={fetchedData} />
         <ConditionDist fetchedData={fetchedData} />
       </div>
+      ) : (
+        <p>データ取得に失敗しました。</p>
+      )}
     </div>
   );
 }
