@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { countDrinkingAmount } from "../countDrinkingAmount";
 import { Bar } from "react-chartjs-2";
 import {

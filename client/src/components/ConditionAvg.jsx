@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function ConditionAvg({ fetchedData }) {
   const [conditionAvg, setConditionAvg] = useState(null);
