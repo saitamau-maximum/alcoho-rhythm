@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import DrinkingAmountGraph from "./components/DrinkingAmountGraph";
-import ConditionAvg from "./components/ConditionAvg";
-import ConditionDist from "./components/ConditionDist";
-import DrinkingState from "./components/DrinkingState";
+import DrinkingAmountGraph from "./components/DrinkingAmountGraph/DrinkingAmountGraph";
+import ConditionAvg from "./components/ConditionAvg/ConditionAvg";
+import ConditionDist from "./components/ConditionDist/ConditionDist";
+import DrinkingState from "./components/DrinkingState/DrinkingState";
 import LimitDrinkingAmountJudge from "./components/LimitDrinkingAmountJudge/LimitDrinkingAmountJudge";
 
 function Dashboard() {
