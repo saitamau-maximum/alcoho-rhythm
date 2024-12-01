@@ -33,31 +33,35 @@ DrinkingAmountGraph.propTypes = {
 function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
   const [data, setData] = useState({
     labels: [],
-    datasets: [
-      {
-        label: "飲酒量",
-        data: [],
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderWidth: 1,
-      },
-    ],
+    datasets: [],
   });
 
   useEffect(() => {
     const drinkingAmountPerDay = countDrinkingAmount(fetchedData, daysInMonth);
     // 1〜31の日付をラベルとして設定
-    const labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+    const labels = Array.from({ length: daysInMonth }, (_, i) =>
+      (i + 1).toString(),
+    );
+
     // グラフデータの更新
+    const datasets = [];
+    drinkingAmountPerDay.forEach((dayData, dayIndex) => {
+      dayData.forEach((dataItem, index) => {
+        // 同じ日に複数のデータがある場合は、それぞれ色ごとに積む
+        if (!datasets[index]) {
+          datasets[index] = {
+            data: new Array(daysInMonth).fill(0),
+            backgroundColor: dataItem.color,
+            borderWidth: 1,
+          };
+        }
+        datasets[index].data[dayIndex] = dataItem.amount;
+      });
+    });
+
     setData({
       labels: labels,
-      datasets: [
-        {
-          label: "飲酒量",
-          data: drinkingAmountPerDay,
-          backgroundColor: "rgba(98, 193, 227, 1)",
-          borderWidth: 1,
-        },
-      ],
+      datasets: datasets,
     });
   }, [fetchedData, daysInMonth]);
 
@@ -67,6 +71,17 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
       title: {
         display: true,
         text: "飲酒量データ",
+      },
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      x: {
+        stacked: true, // x軸で積み重ねを有効にする
+      },
+      y: {
+        stacked: true, // y軸で積み重ねを有効にする
       },
     },
   };
