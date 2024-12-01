@@ -166,16 +166,16 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
-// TODO: postからgetに変更する（ボディを消してクエリパラメータにする
-// HACK: apiの名前がかぶってしまうから一時的にrecordsTmpにしている
-app.post("/api/recordsTmp", async (c) => {
-  const param = await c.req.json();
+app.get("/api/records", async (c) => {
+  const start = c.req.query("start");
+  const end = c.req.query("end");
 
-  if (!param.start || !param.end) {
+  if (!start || !end) {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" are required." });
   }
 
-  if (typeof param.start !== "string" || typeof param.end !== "string") {
+  // 型バリデーション
+  if (typeof start !== "string" || typeof end !== "string") {
     throw new HTTPException(400, { message: "Parameters \"start\" and \"end\" must be string." });
   }
 
@@ -185,12 +185,13 @@ app.post("/api/recordsTmp", async (c) => {
   }
 
   const userId = await getUserIdFromJwt(token, JWT_SECRET);
-  if (!Number.isInteger(userId)) {
-    throw new HTTPException(401, { message: "User ID is not an integer." });
+  if (typeof userId !== "number") {
+    throw new HTTPException(401, { message: "User ID is not an integer" });
   }
 
-  const utcStart = new Date(param.start).toISOString();
-  const utcEnd = new Date(param.end).toISOString();
+  // UTCに変換してからデータベースから取得
+  const utcStart = new Date(start).toISOString();
+  const utcEnd = new Date(end).toISOString();
 
   const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(
     userId, utcStart, utcEnd
