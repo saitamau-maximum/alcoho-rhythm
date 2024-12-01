@@ -15,18 +15,13 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:8000/api/recordsTmp", {
-        //TODO: エンドポイント名を修正する
-        method: "POST", //実際はGET
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://localhost:8000/api/records?start=${displayYear}-${String(Number(displayMonth)+1)}-01&end=${displayYear}-${String(Number(displayMonth)+1)}-${daysInMonth}`,
+        {
+          method: "GET",
+          credentials: "include", // Cookieを送信
         },
-        body: JSON.stringify({
-          start: `${displayYear}-${String(Number(displayMonth) + 1)}-01`,
-          end: `${displayYear}-${String(Number(displayMonth) + 1)}-${daysInMonth}`,
-        }),
-        credentials: "include", // Cookieを送信
-      });
+      );
       const data = await response.json();
       if (response.ok) {
         //fetchしたデータを更新

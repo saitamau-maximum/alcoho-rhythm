@@ -14,9 +14,7 @@ function DrinkingCount({ fetchedData }) {
   useEffect(() => {
     setDrinkingCount(fetchedData.length);
   }, [fetchedData]);
-  return (
-    <div>飲酒回数: {drinkingCount}</div>
-  );
+  return <div>飲酒回数: {drinkingCount}</div>;
 }
 
 export default DrinkingCount;

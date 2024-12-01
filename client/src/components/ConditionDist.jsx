@@ -64,7 +64,7 @@ function ConditionDist({ fetchedData }) {
     <div>
       <h2>体調分布</h2>
       {fetchedData.length !== 0 ? (
-      <Pie data={data} options={options} />
+        <Pie data={data} options={options} />
       ) : (
         <p>データがありません</p>
       )}
