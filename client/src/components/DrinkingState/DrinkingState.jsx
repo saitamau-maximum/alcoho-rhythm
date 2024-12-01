@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { animator } from "chart.js";
+import "./DrinkingState.css";
 
 DrinkingCount.propTypes = {
   fetchedData: PropTypes.arrayOf(
@@ -24,9 +24,15 @@ function DrinkingCount({ fetchedData }) {
     setDrinkingCount(fetchedData.length);
   }, [fetchedData]);
   return (
-    <div>
-      <div>飲酒回数: {drinkingCount}</div>
-      <div>健康飲酒率: {healthyDrinkingRate}%</div>
+    <div className="drinking-state-container">
+      <div className="drinking-count-container">
+        <h1>飲酒回数</h1>
+        <p>{drinkingCount}</p>
+      </div>
+      <div className="healthy-drinking-rate-container">
+        <h1>健康飲酒率</h1>
+        <p>{healthyDrinkingRate}%</p>
+      </div>
     </div>
   );
 }

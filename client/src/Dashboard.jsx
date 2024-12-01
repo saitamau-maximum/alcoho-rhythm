@@ -62,19 +62,26 @@ function Dashboard() {
   return (
     <div>
       <div>
-        <button onClick={preMonth}>◀</button>
-        {`${displayYear}年${String(Number(displayMonth) + 1)}月の体調データ`}
+        {displayMonth}月<button onClick={preMonth}>◀</button>
+        {`${displayYear}年${Number(displayMonth) + 1}月の体調データ`}
         <button onClick={nextMonth}>▶</button>
+        {Number(displayMonth) + 2 === 13 ? 1 : Number(displayMonth) + 2}月
       </div>
       {Array.isArray(fetchedData) ? (
         <div>
-          <DrinkingAmountGraph
-            fetchedData={fetchedData}
-            daysInMonth={daysInMonth}
-          />
-          <DrinkingState fetchedData={fetchedData} />
-          <ConditionAvg fetchedData={fetchedData} />
-          <ConditionDist fetchedData={fetchedData} />
+          <div>
+            <div>
+              <ConditionAvg fetchedData={fetchedData} />
+              <DrinkingState fetchedData={fetchedData} />
+            </div>
+            <DrinkingAmountGraph
+              fetchedData={fetchedData}
+              daysInMonth={daysInMonth}
+            />
+          </div>
+          <div>
+            <ConditionDist fetchedData={fetchedData} />
+          </div>
           <LimitDrinkingAmountJudge />
         </div>
       ) : (

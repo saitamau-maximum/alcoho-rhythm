@@ -1,0 +1,17 @@
+.condition-avg-container {
+  background-color: white;
+  border-radius: 20px;
+  width: 250px;
+  height: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+}
+
+.condition-avg-container h1 {
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.condition-avg-container p {
+  font-size: 60px;
+  font-weight: 500;
+}
