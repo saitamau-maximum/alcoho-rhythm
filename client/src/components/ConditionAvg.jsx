@@ -1,4 +1,13 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+
+ConditionAvg.propTypes = {
+  fetchedData: PropTypes.arrayOf(
+    PropTypes.shape({
+      condition: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 function ConditionAvg({ fetchedData }) {
   const [conditionAvg, setConditionAvg] = useState(null);

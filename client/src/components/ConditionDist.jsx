@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,6 +12,14 @@ import {
 
 // Chart.js のプラグインを登録
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
+
+ConditionDist.propTypes = {
+  fetchedData: PropTypes.arrayOf(
+    PropTypes.shape({
+      condition: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 function ConditionDist({ fetchedData }) {
   const [data, setData] = useState({

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { countDrinkingAmount } from "../countDrinkingAmount";
 import { Bar } from "react-chartjs-2";
 import {
@@ -19,6 +20,15 @@ ChartJS.register(
   Tooltip,
   Legend,
 );
+
+DrinkingAmountGraph.propTypes = {
+  fetchedData: PropTypes.arrayOf(
+    PropTypes.shape({
+      condition: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  daysInMonth: PropTypes.number.isRequired,
+};
 
 function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
   const [data, setData] = useState({
