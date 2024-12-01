@@ -1,3 +1,4 @@
+import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes, Link, Navigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
