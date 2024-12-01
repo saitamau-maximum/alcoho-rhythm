@@ -1,5 +1,5 @@
 import "./register.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -26,6 +26,22 @@ function Register() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch("http://localhost:8000/api/sing/check", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          navigate("/signin");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        navigate("/signin");
+      });
+  }, [navigate]);
+  
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
     const today = new Date();
