@@ -4,11 +4,9 @@ function ConditionAvg({ fetchedData }) {
   const [conditionAvg, setConditionAvg] = useState(null);
   useEffect(() => {
     let conditionSum = 0;
-    if (Array.isArray(fetchedData)) {
       fetchedData.forEach((data) => {
         conditionSum += data.condition;
       });
-    }
     const roundedConditionAvg = (
       (conditionSum / fetchedData.length) || 0
     ).toFixed(1); //小数第1位まで計算

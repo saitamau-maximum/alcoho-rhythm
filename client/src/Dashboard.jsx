@@ -71,7 +71,7 @@ function Dashboard() {
         {`${displayYear}年${String(Number(displayMonth)+1)}月の体調データ`}
         <button onClick={nextMonth}>▶</button>
       </div>
-      {fetchedData ? (
+      {Array.isArray(fetchedData) ? (
       <div>
         <DrinkingAmountGraph
           fetchedData={fetchedData}
