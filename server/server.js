@@ -166,7 +166,7 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
-app.get("/api/sing/check", async (c) => {
+app.get("/api/signin/check", async (c) => {
   const token = getCookie(c, COOKIE_NAME);
   const userId = await getUserIdFromJwt(token, JWT_SECRET);
   return c.json({ userId: userId });

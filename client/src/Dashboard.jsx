@@ -5,7 +5,7 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/sing/check", {
+    fetch("http://localhost:8000/api/signin/check", {
       method: "GET",
       credentials: "include",
     })
