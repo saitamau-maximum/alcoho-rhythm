@@ -41,7 +41,7 @@
 .signin-container button {
   width: 100%;
   padding: 12px; /* ボタンの内側の余白を増やす */
-  background-color: #007bff; /* Signinボタンの色を変えてみました */
+  background-color: #0193a9; /* Signinボタンの色を変えてみました */
   color: white;
   border: none;
   border-radius: 40px; /* 角を丸くする */
@@ -51,5 +51,5 @@
 }
 
 .signin-container button:hover {
-  background-color: #0056b3; /* ホバー時の色 */
+  background-color: #00a0c6; /* ホバー時の色 */
 }
