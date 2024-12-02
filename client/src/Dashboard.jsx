@@ -1,24 +1,20 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/signin/check", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          navigate("/signin");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        navigate("/signin");
-      });
-  }, [navigate]);
+    if (!isLoading && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   return (
     <div>

@@ -1,6 +1,7 @@
-import "./register.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import "./register.css";
 
 function Register() {
   // 状態管理
@@ -24,23 +25,18 @@ function Register() {
     whiskey: 0,
   });
 
+  const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/signin/check", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          navigate("/signin");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        navigate("/signin");
-      });
-  }, [navigate]);
+    if (!isLoading && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
