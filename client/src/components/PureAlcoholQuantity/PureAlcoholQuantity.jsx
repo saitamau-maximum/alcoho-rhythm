@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { calcPureAlcoholQuantityAvg } from '../../utils/calcPureAlcoholQuantityAvg';
+import { useEffect, useState } from "react";
+import { calcPureAlcoholQuantityAvg } from "../../utils/calcPureAlcoholQuantityAvg";
 import PropTypes from "prop-types";
 
 PureAlcoholQuantity.propTypes = {
@@ -21,14 +21,18 @@ function PureAlcoholQuantity({ fetchedData }) {
       <h3>純アルコール量</h3>
       <div>
         {pureAlcoholQuantity.map((item, index) => (
-          <span key={index} style={{margin: "20px"}}>{item}</span>
+          <span key={index} style={{ margin: "20px" }}>
+            {item}
+          </span>
         ))}
         {/* この下は一時的に見やすいようにしてるだけ */}
-        <span style={{display: "block"}}></span>
-        <span>悪い</span><span>←-------------------------→</span><span>良い</span>
+        <span style={{ display: "block" }}></span>
+        <span>悪い</span>
+        <span>←-------------------------→</span>
+        <span>良い</span>
       </div>
     </div>
-  )
+  );
 }
 
-export default PureAlcoholQuantity
+export default PureAlcoholQuantity;

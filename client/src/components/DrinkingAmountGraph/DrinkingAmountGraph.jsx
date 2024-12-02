@@ -18,7 +18,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 DrinkingAmountGraph.propTypes = {
@@ -27,7 +27,7 @@ DrinkingAmountGraph.propTypes = {
       date: PropTypes.number.isRequired,
       alcohol_amount: PropTypes.number.isRequired,
       condition: PropTypes.number.isRequired,
-    })
+    }),
   ).isRequired,
   daysInMonth: PropTypes.number.isRequired,
 };
@@ -43,16 +43,18 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
     const drinkingAmountPerDay = countDrinkingAmount(fetchedData, daysInMonth);
 
     // ラベルを1〜月末日まで作成
-    const labels = Array.from({ length: daysInMonth }, (_, i) => (i + 1).toString());
+    const labels = Array.from({ length: daysInMonth }, (_, i) =>
+      (i + 1).toString(),
+    );
 
     // グラフデータの生成
-    const datasets = drinkingAmountPerDay.flatMap((dayData, dayIndex) => 
+    const datasets = drinkingAmountPerDay.flatMap((dayData, dayIndex) =>
       dayData.map((dataItem) => ({
         label: `Day ${dayIndex + 1}`, // ラベルを日付ベースに設定
         data: labels.map((_, idx) => (idx === dayIndex ? dataItem.amount : 0)), // 該当日以外は0
         backgroundColor: dataItem.color, // conditionに基づいた色
         borderWidth: 1,
-      }))
+      })),
     );
 
     setData({

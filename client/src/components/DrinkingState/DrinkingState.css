@@ -7,7 +7,7 @@
   width: 300px;
   height: 100px;
   padding: 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .drinking-count-container {
@@ -38,4 +38,3 @@
 .healthy-drinking-rate-container span {
   font-size: 30px;
 }
-

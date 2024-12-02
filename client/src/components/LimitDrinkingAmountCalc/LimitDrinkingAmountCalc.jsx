@@ -8,7 +8,7 @@ function LimitDrinkingAmountCalc() {
     pureAlcoholQuantitiy: 0,
     drinkableQuantitiy: 0,
   });
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
 
   // アルコール数量の状態を管理するstate
   const [alcoholQuantities, setAlcoholQuantities] = useState({
@@ -75,12 +75,12 @@ function LimitDrinkingAmountCalc() {
   };
 
   const simulateCondition = async () => {
-    if (!Object.values(alcoholQuantities).some(value => value !== 0)) {
-      setMessage("飲酒量を入力してください");
+    if (!Object.values(alcoholQuantities).some((value) => value !== 0)) {
+      // setMessage("飲酒量を入力してください");
       return;
     } else {
-      setMessage("");
-    } 
+      // setMessage("");
+    }
 
     const pastOneYearsData = await fetchYearsData();
     const pastOneYearsAlcoholQuantityAvg =

@@ -27,11 +27,15 @@ function DrinkingCount({ fetchedData }) {
     <div className="drinking-state-container">
       <div className="drinking-count-container">
         <h1>飲酒回数</h1>
-        <p><span>{drinkingCount}</span>回</p>
+        <p>
+          <span>{drinkingCount}</span>回
+        </p>
       </div>
       <div className="healthy-drinking-rate-container">
         <h1>健康飲酒率</h1>
-        <p><span>{healthyDrinkingRate}</span>%</p>
+        <p>
+          <span>{healthyDrinkingRate}</span>%
+        </p>
       </div>
     </div>
   );
