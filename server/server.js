@@ -166,6 +166,12 @@ app.get("/api/signout", (c) => {
   return c.json({ message: "Successfully signed out." });
 });
 
+app.get("/api/signin/check", async (c) => {
+  const token = getCookie(c, COOKIE_NAME);
+  const userId = await getUserIdFromJwt(token, JWT_SECRET);
+  return c.json({ userId: userId });
+});
+
 app.get("/api/records", async (c) => {
   const start = c.req.query("start");
   const end = c.req.query("end");
