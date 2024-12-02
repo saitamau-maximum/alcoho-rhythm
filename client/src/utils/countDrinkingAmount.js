@@ -1,6 +1,6 @@
-export const countDrinkingAmount = (drinkingDataForMonth, daysInMonth) => {
-  const colors = ["#6699FF", "#9999FF", "#CC99FF", "#FF99CC", "#FF6666"]; // 色 (柔らかい赤から青)
+import { CONDITION_COLORS } from "../constant/color";
 
+export const countDrinkingAmount = (drinkingDataForMonth, daysInMonth) => {
   // 各日付に対応する飲酒データを格納する初期配列
   const drinkingAmounts = new Array(daysInMonth).fill(null).map(() => []);
 
@@ -10,7 +10,7 @@ export const countDrinkingAmount = (drinkingDataForMonth, daysInMonth) => {
     const day = date.getDate() - 1; // 0インデックス化
     drinkingAmounts[day].push({
       amount: data.alcohol_amount,
-      color: colors[data.condition - 1], // conditionに応じた色
+      color: CONDITION_COLORS[data.condition - 1], // conditionに応じた色
     });
   });
 

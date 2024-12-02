@@ -9,6 +9,7 @@ import {
   ArcElement,
   CategoryScale,
 } from "chart.js";
+import { CONDITION_COLORS } from "../../constant/color";
 
 // Chart.js のプラグインを登録
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
@@ -27,7 +28,7 @@ function ConditionDist({ fetchedData }) {
     datasets: [
       {
         data: [],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "green", "blue"], //TODO: デザインの色に変更する
+        backgroundColor: CONDITION_COLORS, //TODO: デザインの色に変更する
       },
     ],
   });
@@ -42,7 +43,7 @@ function ConditionDist({ fetchedData }) {
       datasets: [
         {
           data: conditionsData,
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "green", "blue"],
+          backgroundColor: CONDITION_COLORS,
         },
       ],
     });
