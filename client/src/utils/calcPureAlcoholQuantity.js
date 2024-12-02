@@ -1,11 +1,11 @@
-export const calcPureAlcoholQuantity = (fetchedData) {
-
-const uniqueDates = new Set(fetchedData.map(item => item.date)); // array[i].dateを取り出してセットに追加
-const uniqueDateCount = uniqueDates.size; // ユニークな日付の数を取得
-
-  const allDateConditionData = Array.
-  const conditionAvg = [0, 0, 0, 0, 0];
+export const calcPureAlcoholQuantity = (fetchedData) => {
+  const conditionsSum = [0, 0, 0, 0, 0];
   fetchedData.forEach((data) => {
-    data.
+    conditionsSum[data.condition-1] += data.alcohol_amount;
   });
+  if (fetchedData.length === 0) {
+    return Array(5).fill(0);
+  }
+  const allConditionAvg = conditionsSum.map((data) => (data / fetchedData.length).toFixed(1));
+  return allConditionAvg;
 }
