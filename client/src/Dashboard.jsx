@@ -4,6 +4,7 @@ import ConditionAvg from "./components/ConditionAvg/ConditionAvg";
 import ConditionDist from "./components/ConditionDist/ConditionDist";
 import DrinkingState from "./components/DrinkingState/DrinkingState";
 import LimitDrinkingAmountCalc from "./components/LimitDrinkingAmountCalc/LimitDrinkingAmountCalc";
+import PureAlcoholQuantity from "./components/PureAlcoholQuantity/PureAlcoholQuantity";
 import "./Dashboard.css";
 
 function Dashboard() {
@@ -60,6 +61,8 @@ function Dashboard() {
     }
   };
 
+  console.log(fetchedData);
+
   return (
     <div>
       <div>
@@ -83,6 +86,7 @@ function Dashboard() {
             </div>
             <div>
               <ConditionDist fetchedData={fetchedData} />
+              <PureAlcoholQuantity fetchedData={fetchedData} />
             </div>
           </div>
           <LimitDrinkingAmountCalc />

@@ -8,9 +8,6 @@ function LimitDrinkingAmountCalc() {
   const [isDateValid, setIsDateValid] = useState(false);
   const [conditionError, setConditionError] = useState(false);
 
-  // エラーメッセージの状態を追加
-  const [errorMessage, setErrorMessage] = useState("");
-
   // アルコール数量の状態を管理するstate
   const [alcoholQuantities, setAlcoholQuantities] = useState({
     beer350: 0,
@@ -261,6 +258,14 @@ function LimitDrinkingAmountCalc() {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div>
+        <button>判定結果を表示</button>
+        <div>
+          <span>体調予測値: </span>
+          <span>純アルコール量: </span>
+          <span>健康飲酒まで: </span>
+        </div>
       </div>
     </div>
   );

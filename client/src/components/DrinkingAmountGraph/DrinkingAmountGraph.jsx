@@ -18,14 +18,16 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
 DrinkingAmountGraph.propTypes = {
   fetchedData: PropTypes.arrayOf(
     PropTypes.shape({
+      date: PropTypes.number.isRequired,
+      alcohol_amount: PropTypes.number.isRequired,
       condition: PropTypes.number.isRequired,
-    }),
+    })
   ).isRequired,
   daysInMonth: PropTypes.number.isRequired,
 };
@@ -37,31 +39,25 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
   });
 
   useEffect(() => {
+    // 日付ごとの飲酒データを取得
     const drinkingAmountPerDay = countDrinkingAmount(fetchedData, daysInMonth);
-    // 1〜31の日付をラベルとして設定
-    const labels = Array.from({ length: daysInMonth }, (_, i) =>
-      (i + 1).toString(),
+
+    // ラベルを1〜月末日まで作成
+    const labels = Array.from({ length: daysInMonth }, (_, i) => (i + 1).toString());
+
+    // グラフデータの生成
+    const datasets = drinkingAmountPerDay.flatMap((dayData, dayIndex) => 
+      dayData.map((dataItem) => ({
+        label: `Day ${dayIndex + 1}`, // ラベルを日付ベースに設定
+        data: labels.map((_, idx) => (idx === dayIndex ? dataItem.amount : 0)), // 該当日以外は0
+        backgroundColor: dataItem.color, // conditionに基づいた色
+        borderWidth: 1,
+      }))
     );
 
-    // グラフデータの更新
-    const datasets = [];
-    drinkingAmountPerDay.forEach((dayData, dayIndex) => {
-      dayData.forEach((dataItem, index) => {
-        // 同じ日に複数のデータがある場合は、それぞれ色ごとに積む
-        if (!datasets[index]) {
-          datasets[index] = {
-            data: new Array(daysInMonth).fill(0),
-            backgroundColor: dataItem.color,
-            borderWidth: 1,
-          };
-        }
-        datasets[index].data[dayIndex] = dataItem.amount;
-      });
-    });
-
     setData({
-      labels: labels,
-      datasets: datasets,
+      labels,
+      datasets,
     });
   }, [fetchedData, daysInMonth]);
 
@@ -78,10 +74,10 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
     },
     scales: {
       x: {
-        stacked: true, // x軸で積み重ねを有効にする
+        stacked: true, // X軸の積み上げ
       },
       y: {
-        stacked: true, // y軸で積み重ねを有効にする
+        stacked: true, // Y軸の積み上げ
       },
     },
   };
