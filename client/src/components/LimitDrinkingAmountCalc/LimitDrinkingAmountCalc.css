@@ -1,0 +1,224 @@
+/* グローバル設定 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  color: #283b48;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* コンテナ全体のデザイン */
+div {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* 各セクションのスタイル */
+.date-register,
+.alcohol-register,
+.condition-register {
+  margin-top: 32px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* 各セクションのタイトル */
+h2 {
+  font-size: 28px;
+  color: #283b48;
+  border-bottom: 2px solid #00a6c0;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+/* ラベルのスタイル */
+label {
+  font-size: 20px;
+  color: #283b48;
+  margin: 12px;
+}
+
+/* 日付入力フィールド */
+input[type="date"] {
+  background-color: #f9f9f9;
+  color: #283b48;
+  border: 1px solid #00a6c0;
+  padding: 16px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+}
+
+/* エラーメッセージのスタイル */
+.error-message {
+  color: #00a6c0;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+/* テーブルのスタイル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 20px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background-color: #00a6c0;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+td {
+  background-color: #f9f9f9;
+  color: #283b48;
+  font-size: 16px;
+}
+
+input[type="number"] {
+  padding: 12px;
+  width: 100%;
+  max-width: 152px;
+  border: 1px solid #00a6c0;
+  border-radius: 12px;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #283b48;
+  text-align: right;
+}
+
+/* 体調評価セクションのレイアウト */
+.condition-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  gap: 16px;
+}
+
+/* 体調評価用のテキスト */
+.condition-buttons span {
+  font-size: 24px;
+  color: #00a6c0;
+  font-weight: bold;
+  margin: 8px;
+}
+
+/* 体調ボタンのスタイル */
+.condition-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.condition-buttons button {
+  background-color: #00a6c0;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  max-width: 100px;
+}
+
+.condition-buttons button.active,
+.condition-buttons button:hover {
+  background-color: #283b48;
+}
+
+/* 登録ボタンのスタイル */
+.submit-button {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button button {
+  background-color: #00a6c0;
+  color: white;
+  border: none;
+  padding: 16px 64px;
+  border-radius: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button button:hover:not(:disabled) {
+  background-color: #283b48;
+}
+
+/* 画面サイズが小さい場合の調整 */
+@media (max-width: 768px) {
+  div {
+    padding: 16px;
+  }
+
+  .condition-buttons button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .submit-button button {
+    padding: 12px 48px;
+    font-size: 18px;
+  }
+}
+
+/* エラーメッセージのスタイル */
+.error-message {
+  color: #00a6c0;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+.simulatecondition-container {
+  display: flex;
+  justify-content: center;
+}
+
+.simulation-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  padding: 24px;
+  width: 600px;
+  /*縦並びにする*/
+  display: flex;
+  flex-direction: column;
+}
+
+.simulation-card-title {
+  font-size: 16px;
+  color: #283b48;
+}
+
+.simulation-card-data {
+  font-size: 32px;
+  color: #283b48;
+  margin-top: 16px;
+}

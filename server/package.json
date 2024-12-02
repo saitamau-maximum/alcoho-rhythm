@@ -7,7 +7,8 @@
     "better-sqlite3": "^11.4.0",
     "dotenv": "^16.4.5",
     "hono": "^4.3.7",
-    "jose": "^5.9.6"
+    "jose": "^5.9.6",
+    "sqlite3": "^5.1.7"
   },
   "scripts": {
     "start": "node server.js"

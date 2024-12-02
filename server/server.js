@@ -186,7 +186,6 @@ app.get("/api/records", async (c) => {
   }
 
   const token = getCookie(c, COOKIE_NAME);
-
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
@@ -200,7 +199,9 @@ app.get("/api/records", async (c) => {
   const utcStart = new Date(start).toISOString();
   const utcEnd = new Date(end).toISOString();
 
-  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(userId, utcStart, utcEnd);
+  const records = db.prepare(queries.DrinkingRecords.findByUserIdAndDateRange).all(
+    userId, utcStart, utcEnd
+  );
 
   return c.json(records);
 });
