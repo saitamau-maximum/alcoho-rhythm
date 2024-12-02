@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { calcPureAlcoholQuantity } from '../../utils/calcPureAlcoholQuantity';
+import { calcPureAlcoholQuantityAvg } from '../../utils/calcPureAlcoholQuantityAvg';
 import PropTypes from "prop-types";
 
 PureAlcoholQuantity.propTypes = {
@@ -13,7 +13,7 @@ PureAlcoholQuantity.propTypes = {
 function PureAlcoholQuantity({ fetchedData }) {
   const [pureAlcoholQuantity, setPureAlcoholQuantity] = useState([]);
   useEffect(() => {
-    setPureAlcoholQuantity(calcPureAlcoholQuantity(fetchedData));
+    setPureAlcoholQuantity(calcPureAlcoholQuantityAvg(fetchedData));
   }, [fetchedData]);
   console.log(pureAlcoholQuantity);
   return (

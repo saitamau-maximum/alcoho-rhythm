@@ -1,12 +1,14 @@
+import { calcPureAlcoholQuantityAvg } from "../../utils/calcPureAlcoholQuantityAvg";
 import "./LimitDrinkingAmountCalc.css";
 import { useState } from "react";
 
 function LimitDrinkingAmountCalc() {
-  // 状態管理
-  const [selectedCondition, setSelectedCondition] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [isDateValid, setIsDateValid] = useState(false);
-  const [conditionError, setConditionError] = useState(false);
+  const [simulatedResults, setSimulatedResults] = useState({
+    condition: 0,
+    pureAlcoholQuantitiy: 0,
+    drinkableQuantitiy: 0,
+  });
+  const [message, setMessage] = useState("");
 
   // アルコール数量の状態を管理するstate
   const [alcoholQuantities, setAlcoholQuantities] = useState({
@@ -20,10 +22,27 @@ function LimitDrinkingAmountCalc() {
     whiskey: 0,
   });
 
-  // 体調ボタンがクリックされたときの処理
-  const handleConditionClick = (value) => {
-    setSelectedCondition(value);
-    setConditionError(false);
+  const fetchYearsData = async () => {
+    const currentDate = new Date();
+    const oneYearAgoDate = new Date(
+      Number(currentDate.getFullYear() - 1),
+      currentDate.getMonth(),
+      currentDate.getDay(),
+    );
+    const currentDateISO = currentDate.toISOString().split("T")[0];
+    const oneYearAgoDateISO = oneYearAgoDate.toISOString().split("T")[0];
+    const response = await fetch(
+      `http://localhost:8000/api/records?start=${oneYearAgoDateISO}&end=${currentDateISO}`,
+      {
+        credentials: "include", // Cookieを送信
+      },
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.log("failed to fetch data");
+    }
   };
 
   // アルコール量を計算する関数
@@ -55,8 +74,35 @@ function LimitDrinkingAmountCalc() {
     return total;
   };
 
-  // ボタンの無効化
-  const isButtonDisabled = !isDateValid || selectedCondition === null;
+  const simulateCondition = async () => {
+    if (!Object.values(alcoholQuantities).some(value => value !== 0)) {
+      setMessage("飲酒量を入力してください");
+      return;
+    } else {
+      setMessage("");
+    } 
+
+    const pastOneYearsData = await fetchYearsData();
+    const pastOneYearsAlcoholQuantityAvg =
+      calcPureAlcoholQuantityAvg(pastOneYearsData);
+
+    const pureAlcoholQuantity = computeTotalAlcohol();
+    //差が最小となる体調を探す
+    const differences = pastOneYearsAlcoholQuantityAvg.map((value) =>
+      Math.abs(value - pureAlcoholQuantity),
+    );
+    const simulatedCondition =
+      differences.indexOf(Math.min(...differences)) + 1;
+
+    const drinkableQuantitiy =
+      pastOneYearsAlcoholQuantityAvg[1] - pureAlcoholQuantity;
+    //データを更新
+    setSimulatedResults({
+      condition: simulatedCondition,
+      pureAlcoholQuantitiy: pureAlcoholQuantity,
+      drinkableQuantitiy: drinkableQuantitiy,
+    });
+  };
 
   return (
     <div className="register-container">
@@ -260,12 +306,14 @@ function LimitDrinkingAmountCalc() {
         </table>
       </div>
       <div>
-        <button>判定結果を表示</button>
-        <div>
-          <span>体調予測値: </span>
-          <span>純アルコール量: </span>
-          <span>健康飲酒まで: </span>
-        </div>
+        <button onClick={simulateCondition}>判定結果を表示</button>
+        {simulatedResults.condition !== 0 && (
+          <div>
+            <span>体調予測値: {simulatedResults.condition}</span>
+            <span>純アルコール量: {simulatedResults.pureAlcoholQuantitiy}</span>
+            <span>健康飲酒まで: {simulatedResults.drinkableQuantitiy}</span>
+          </div>
+        )}
       </div>
     </div>
   );

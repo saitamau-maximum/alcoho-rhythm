@@ -1,4 +1,4 @@
-export const calcPureAlcoholQuantity = (fetchedData) => {
+export const calcPureAlcoholQuantityAvg = (fetchedData) => {
   const conditionsSum = [0, 0, 0, 0, 0];
   fetchedData.forEach((data) => {
     conditionsSum[data.condition-1] += data.alcohol_amount;

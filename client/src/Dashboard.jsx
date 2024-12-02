@@ -21,7 +21,6 @@ function Dashboard() {
       const response = await fetch(
         `http://localhost:8000/api/records?start=${displayYear}-${String(Number(displayMonth) + 1)}-01&end=${displayYear}-${String(Number(displayMonth) + 1)}-${daysInMonth}`,
         {
-          method: "GET",
           credentials: "include", // Cookieを送信
         },
       );
