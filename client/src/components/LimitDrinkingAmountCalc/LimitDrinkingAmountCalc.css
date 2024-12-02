@@ -187,3 +187,10 @@ input[type="number"] {
     font-size: 18px;
   }
 }
+
+/* エラーメッセージのスタイル */
+.error-message {
+  color: #00a6c0;
+  font-size: 16px;
+  margin-top: 8px;
+}

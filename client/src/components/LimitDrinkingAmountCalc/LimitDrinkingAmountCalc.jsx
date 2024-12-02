@@ -8,7 +8,7 @@ function LimitDrinkingAmountCalc() {
     pureAlcoholQuantitiy: 0,
     drinkableQuantitiy: 0,
   });
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   // アルコール数量の状態を管理するstate
   const [alcoholQuantities, setAlcoholQuantities] = useState({
@@ -76,10 +76,10 @@ function LimitDrinkingAmountCalc() {
 
   const simulateCondition = async () => {
     if (!Object.values(alcoholQuantities).some((value) => value !== 0)) {
-      // setMessage("飲酒量を入力してください");
+      setMessage("飲酒量を入力してください");
       return;
     } else {
-      // setMessage("");
+      setMessage("");
     }
 
     const pastOneYearsData = await fetchYearsData();
@@ -307,12 +307,14 @@ function LimitDrinkingAmountCalc() {
       </div>
       <div>
         <button onClick={simulateCondition}>判定結果を表示</button>
-        {simulatedResults.condition !== 0 && (
+        {simulatedResults.condition !== 0 ? (
           <div>
             <span>体調予測値: {simulatedResults.condition}</span>
             <span>純アルコール量: {simulatedResults.pureAlcoholQuantitiy}</span>
             <span>健康飲酒まで: {simulatedResults.drinkableQuantitiy}</span>
           </div>
+        ) : (
+          <div className="error-message">{message}</div>
         )}
       </div>
     </div>
