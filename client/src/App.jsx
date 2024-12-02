@@ -7,8 +7,12 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Link to="/signup">Signup</Link> |{" "}
-        <Link to="/dashboard">Dashboard</Link>
+        <header>
+        <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
+        <Link to="/dashboard">Dashboard</Link> |{" "}
+        <Link to="/Register">Register</Link>
+        </header>
+
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />

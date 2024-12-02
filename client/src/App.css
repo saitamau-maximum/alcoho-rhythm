@@ -40,3 +40,20 @@
 .read-the-docs {
   color: #888;
 }
+
+header {
+  width: 100%; /* 幅いっぱいを指定 */
+  height: 50px; /* ヘッダーの大きさを指定 */
+  background: #ffffff;
+  padding: 20px 50px; /* ヘッダーに上下左右それぞれ余白を指定(タイトルが左にくっつきすぎないようにするため) */
+  box-sizing: border-box; /* padding分を含んで幅を100%にするため(ヘッダーの初期位置と後ろのページが重ならないようにするため) */
+  position: fixed; /* ウィンドウを基準に画面に固定 (ヘッダーを上に余白なく張り付けている)*/
+  top: 0; /* 上下の固定位置を上から0pxにする */
+  left: 0; /* 左右の固定位置を左から0pxにする */
+  display: flex; /* 中の要素を横並びにする */
+  justify-content: space-between; /* 中の要素を左右に分ける */
+  align-items: center; /* 中の要素を縦に中央に揃える */
+  /* ヘッダーの影をつける */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* ヘッダーが他の要素より上に来る */
+}
