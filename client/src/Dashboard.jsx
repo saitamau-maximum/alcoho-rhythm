@@ -4,13 +4,17 @@ import { useAuth } from "./hooks/useAuth";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const isAuthenticated = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate("/signin");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, navigate]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   return (
     <div>

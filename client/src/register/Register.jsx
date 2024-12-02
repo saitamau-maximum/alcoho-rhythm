@@ -25,14 +25,18 @@ function Register() {
     whiskey: 0,
   });
 
-  const isAuthenticated = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate("/signin");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, navigate]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
@@ -134,10 +138,6 @@ function Register() {
 
   // ボタンの無効化
   const isButtonDisabled = !isDateValid || selectedCondition === null;
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   return (
     <div className="register-container">
