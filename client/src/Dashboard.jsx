@@ -18,12 +18,13 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        `http://localhost:8000/api/records?start=${displayYear}-${String(Number(displayMonth) + 1)}-01&end=${displayYear}-${String(Number(displayMonth) + 1)}-${daysInMonth}`,
-        {
-          credentials: "include", // Cookieを送信
-        },
-      );
+      const startDate = `${displayYear}-${String(Number(displayMonth) + 1).padStart(2, "0")}-01`;
+      const endDate = `${displayYear}-${String(Number(displayMonth) + 1).padStart(2, "0")}-${daysInMonth}`;
+      const url = `http://localhost:8000/api/records?start=${startDate}&end=${endDate}`;
+
+      const response = await fetch(url, {
+        credentials: "include", // Cookieを送信
+      });
       const data = await response.json();
       if (response.ok) {
         //fetchしたデータを更新
