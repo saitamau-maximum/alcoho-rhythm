@@ -7,7 +7,24 @@ import LimitDrinkingAmountCalc from "./components/LimitDrinkingAmountCalc/LimitD
 import PureAlcoholQuantity from "./components/PureAlcoholQuantity/PureAlcoholQuantity";
 import "./Dashboard.css";
 
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
+
 function Dashboard() {
+  const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
+
   const now = new Date();
   const nowYear = now.getFullYear();
   const nowMonth = String(now.getMonth()).padStart(2, "0");
