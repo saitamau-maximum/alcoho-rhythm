@@ -8,9 +8,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <header>
-        <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
-        <Link to="/dashboard">Dashboard</Link> |{" "}
-        <Link to="/Register">Register</Link>
+          <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
+          <Link to="/dashboard">Dashboard</Link> |{" "}
+          <Link to="/Register">Register</Link>
         </header>
 
         <Routes>
