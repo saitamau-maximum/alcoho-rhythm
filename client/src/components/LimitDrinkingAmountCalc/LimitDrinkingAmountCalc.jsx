@@ -309,9 +309,24 @@ function LimitDrinkingAmountCalc() {
         <button onClick={simulateCondition}>判定結果を表示</button>
         {simulatedResults.condition !== 0 ? (
           <div className="simulatecondition-container">
-            <div className="simulation-card"><span className="simulation-card-title">体調予測値:</span> <span className="simulation-card-data">{simulatedResults.condition}</span></div>
-            <div className="simulation-card"><span className="simulation-card-title">純アルコール量:</span> <span className="simulation-card-data">{simulatedResults.pureAlcoholQuantitiy}</span></div>
-            <div className="simulation-card"><span className="simulation-card-title">健康飲酒まで:</span> <span className="simulation-card-data">{simulatedResults.drinkableQuantitiy}</span></div>
+            <div className="simulation-card">
+              <span className="simulation-card-title">体調予測値:</span>{" "}
+              <span className="simulation-card-data">
+                {simulatedResults.condition}
+              </span>
+            </div>
+            <div className="simulation-card">
+              <span className="simulation-card-title">純アルコール量:</span>{" "}
+              <span className="simulation-card-data">
+                {simulatedResults.pureAlcoholQuantitiy}
+              </span>
+            </div>
+            <div className="simulation-card">
+              <span className="simulation-card-title">健康飲酒まで:</span>{" "}
+              <span className="simulation-card-data">
+                {simulatedResults.drinkableQuantitiy}
+              </span>
+            </div>
           </div>
         ) : (
           <div className="error-message">{message}</div>
