@@ -43,7 +43,7 @@
 .signup-container button {
   width: 100%;
   padding: 12px; /* ボタンの内側の余白を増やす */
-  background-color: #28a745;
+  background-color: #007d90;
   color: white;
   border: none;
   border-radius: 40px; /* 角を丸くする */
@@ -53,5 +53,5 @@
 }
 
 .signup-container button:hover {
-  background-color: #218838;
+  background-color: #00a0c6;
 }
