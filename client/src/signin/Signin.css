@@ -1,0 +1,55 @@
+.page-background {
+  background-color: #f0f0f0; /* 背景色 */
+  min-height: 100vh; /* ページ全体の高さをカバー */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin-container {
+  max-width: 600px; /* フォームの横幅を広げる */
+  width: 100%; /* 画面サイズに応じて横幅を可変にする */
+  padding: 40px; /* 内側の余白を増やしてフォームを広く見せる */
+  background-color: #ffffff; /* 背景色 */
+  border: 1px solid #ddd; /* 枠線 */
+  border-radius: 40px; /* 角を丸くする */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影で立体感を追加 */
+}
+
+.signin-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.signin-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.signin-container input {
+  width: 100%;
+  padding: 12px; /* フォーム入力フィールドの内側の余白を増やす */
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.signin-container button {
+  width: 100%;
+  padding: 12px; /* ボタンの内側の余白を増やす */
+  background-color: #007bff; /* Signinボタンの色を変えてみました */
+  color: white;
+  border: none;
+  border-radius: 40px; /* 角を丸くする */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signin-container button:hover {
+  background-color: #0056b3; /* ホバー時の色 */
+}
