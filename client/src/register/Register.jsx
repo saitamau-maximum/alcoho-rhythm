@@ -1,6 +1,7 @@
-import "./register.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import "./register.css";
 
 function Register() {
   // 状態管理
@@ -24,23 +25,14 @@ function Register() {
     whiskey: 0,
   });
 
+  const isAuthenticated = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/signin/check", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          navigate("/signin");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        navigate("/signin");
-      });
-  }, [navigate]);
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
 
   // 今日の日付を取得してフォーマットする関数
   const getTodayDate = () => {
@@ -142,6 +134,10 @@ function Register() {
 
   // ボタンの無効化
   const isButtonDisabled = !isDateValid || selectedCondition === null;
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="register-container">
