@@ -1,0 +1,68 @@
+.pureAlcoholQuantityContainer {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  height: 200px;
+}
+
+.pureAlcoholQuantityContainer p {
+  font-size: 20px;
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: 0;
+}
+
+.pureAlcoholQuantity {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-top: 30px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  align-items: center;
+}
+
+.arrowContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.arrowLine {
+  width: 80%; /* 長い線 */
+  height: 2px;
+  background: #333; /* 線の色 */
+  position: relative;
+}
+
+.arrowLine::before,
+.arrowLine::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.arrowLine::before {
+  left: -12px;
+  border-width: 6px 12px 6px 0;
+  border-color: transparent #333 transparent transparent;
+}
+
+.arrowLine::after {
+  right: -12px;
+  border-width: 6px 0 6px 12px;
+  border-color: transparent transparent transparent #333;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { calcPureAlcoholQuantityAvg } from "../../utils/calcPureAlcoholQuantityAvg";
 import PropTypes from "prop-types";
-import "./PureAlcoholQuantity.css";
+import styles from "./PureAlcoholQuantity.module.css";
 
 PureAlcoholQuantity.propTypes = {
   fetchedData: PropTypes.arrayOf(
@@ -18,19 +18,24 @@ function PureAlcoholQuantity({ fetchedData }) {
   }, [fetchedData]);
   console.log(pureAlcoholQuantity);
   return (
-    <div className="pure-alcohol-quantity-container">
-      <h3>純アルコール量</h3>
-      <div className="pure-alcohol-quantity-2">
-        {pureAlcoholQuantity.map((item, index) => (
-          <span key={index} style={{ margin: "20px" }}>
-            {item}
-          </span>
-        ))}
-        {/* この下は一時的に見やすいようにしてるだけ */}
-        <span style={{ display: "block" }}></span>
-        <span>悪い</span>
-        <span className="yajirushi">←-------------------------→</span>
-        <span>良い</span>
+    <div className={styles.pureAlcoholQuantityContainer}>
+      <p>純アルコール量</p>
+      <div className={styles.pureAlcoholQuantity}>
+        <div>
+          <div className={styles.top}>
+            {pureAlcoholQuantity.map((item, index) => (
+              <span key={index}>{item}</span>
+            ))}
+          </div>
+          <div className={styles.bottom}>
+            <div>良</div>
+            <div className={styles.arrowContainer}>
+              <div className={styles.arrowLine}></div>
+            </div>
+            <div>悪</div>
+          </div>
+          <div style={{margin: "0 auto", width: "45px", fontSize: "20px"}}>体調</div>
+        </div>
       </div>
     </div>
   );

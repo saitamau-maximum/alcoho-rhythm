@@ -1,0 +1,26 @@
+.headerContainer {
+  background-color: rgba(0, 0, 0, 0.768);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  color: white;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.linkContainer {
+  position: absolute;
+  right: 50px;
+}
+
+.link {
+  margin-left: 35px;
+  color: white;
+  text-decoration: none;
+}

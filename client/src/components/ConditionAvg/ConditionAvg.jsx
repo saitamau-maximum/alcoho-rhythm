@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import "./ConditionAvg.css";
+import styles from "./ConditionAvg.module.css";
 
 ConditionAvg.propTypes = {
   fetchedData: PropTypes.arrayOf(
@@ -24,9 +24,9 @@ function ConditionAvg({ fetchedData }) {
     setConditionAvg(roundedConditionAvg);
   }, [fetchedData]);
   return (
-    <div className="condition-avg-container">
-      <h1>体調平均値</h1>
-      <p>{conditionAvg}</p>
+    <div className={styles.container}>
+      <p>体調平均値</p>
+      <span>{conditionAvg}</span>
     </div>
   );
 }

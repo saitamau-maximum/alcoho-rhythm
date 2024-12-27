@@ -7,7 +7,7 @@ import ConditionDist from "./components/ConditionDist/ConditionDist";
 import DrinkingState from "./components/DrinkingState/DrinkingState";
 import LimitDrinkingAmountCalc from "./components/LimitDrinkingAmountCalc/LimitDrinkingAmountCalc";
 import PureAlcoholQuantity from "./components/PureAlcoholQuantity/PureAlcoholQuantity";
-import "./Dashboard.css";
+import styles from "./Dashboard.module.css";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -88,19 +88,22 @@ function Dashboard() {
   console.log(fetchedData);
 
   return (
-    <div>
-      <div>
-        {displayMonth}月<button onClick={preMonth}>◀</button>
-        {`${displayYear}年${Number(displayMonth) + 1}月の体調データ`}
-        <button onClick={nextMonth}>▶</button>
-        {Number(displayMonth) + 2 === 13 ? 1 : Number(displayMonth) + 2}月
+    <div className={styles.container}>
+      <div className={styles.navigation}>
+        <span className={styles.month}>{displayMonth}月</span>
+        <button onClick={preMonth} className={styles.triangleRight}></button>
+        <span className={styles.month}>{`${displayYear}年${Number(displayMonth) + 1}月の体調データ`}</span>
+        <button onClick={nextMonth} className={styles.triangleLeft}></button>
+        <span className={styles.month}>
+          {Number(displayMonth) + 2 === 13 ? 1 : Number(displayMonth) + 2}月
+        </span>
       </div>
       {Array.isArray(fetchedData) ? (
-        <div className="container">
-          <div className="drinking-data-container">
-            <div className="left-container">
-              <div className="left-top-container">
-                <ConditionAvg fetchedData={fetchedData} />
+        <div className={styles.dataContainer}>
+          <div className={styles.drinkingDataContainer}>
+            <div className={styles.leftContainer}>
+              <div className={styles.leftTopContainer}>
+                <ConditionAvg fetchedData={fetchedData}/>
                 <DrinkingState fetchedData={fetchedData} />
               </div>
               <DrinkingAmountGraph
@@ -108,7 +111,7 @@ function Dashboard() {
                 daysInMonth={daysInMonth}
               />
             </div>
-            <div>
+            <div className={styles.rightContainer}>
               <ConditionDist fetchedData={fetchedData} />
               <PureAlcoholQuantity fetchedData={fetchedData} />
             </div>

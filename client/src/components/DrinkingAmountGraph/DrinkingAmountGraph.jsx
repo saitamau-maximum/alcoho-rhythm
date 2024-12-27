@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import styles from "./DrinkingAmountGraph.module.css";
 
 ChartJS.register(
   CategoryScale,
@@ -67,8 +68,7 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
     responsive: true,
     plugins: {
       title: {
-        display: true,
-        text: "飲酒量データ",
+        display: false,
       },
       legend: {
         display: false,
@@ -85,7 +85,8 @@ function DrinkingAmountGraph({ fetchedData, daysInMonth }) {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.title}>飲酒量データ</div>
       <Bar data={data} options={options} />
     </div>
   );

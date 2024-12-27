@@ -10,6 +10,7 @@ import {
   CategoryScale,
 } from "chart.js";
 import { CONDITION_COLORS } from "../../constant/color";
+import styles from "./ConditionDist.module.css";
 
 // Chart.js のプラグインを登録
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
@@ -51,9 +52,10 @@ function ConditionDist({ fetchedData }) {
 
   const options = {
     responsive: true,
+    mainAspectRatio: false,
     plugins: {
       legend: {
-        position: "top",
+        display: false,
       },
       tooltip: {
         enabled: true,
@@ -62,13 +64,15 @@ function ConditionDist({ fetchedData }) {
   };
 
   return (
-    <div>
-      <h2>体調分布</h2>
+    <div className={styles.container}>
+      <p>体調分布</p>
+      <div className={styles.graph}>
       {fetchedData.length !== 0 ? (
         <Pie data={data} options={options} />
       ) : (
         <p>データがありません</p>
       )}
+      </div>
     </div>
   );
 }

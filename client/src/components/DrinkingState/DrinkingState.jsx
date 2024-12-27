@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import "./DrinkingState.css";
+import styles from "./DrinkingState.module.css";
 
 DrinkingCount.propTypes = {
   fetchedData: PropTypes.arrayOf(
@@ -24,18 +24,18 @@ function DrinkingCount({ fetchedData }) {
     setDrinkingCount(fetchedData.length);
   }, [fetchedData]);
   return (
-    <div className="drinking-state-container">
-      <div className="drinking-count-container">
+    <div className={styles.drinkingStateContainer}>
+      <div className={styles.drinkingCountContainer}>
         <h1>飲酒回数</h1>
-        <p>
-          <span>{drinkingCount}</span>回
-        </p>
+        <div>
+          <span>{drinkingCount}</span><p>回</p>
+        </div>
       </div>
-      <div className="healthy-drinking-rate-container">
+      <div className={styles.healthyDrinkingRateContainer}>
         <h1>健康飲酒率</h1>
-        <p>
-          <span>{healthyDrinkingRate}</span>%
-        </p>
+        <div>
+          <span>{healthyDrinkingRate}</span><p>%</p>
+        </div>
       </div>
     </div>
   );

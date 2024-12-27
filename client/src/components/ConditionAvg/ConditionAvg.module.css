@@ -1,0 +1,26 @@
+.container {
+  background-color: white;
+  height: 200px;
+  width: 40%;
+  margin: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.container p {
+  margin-top: 35px;
+  font-size: 20px;
+  font-weight: normal;
+  text-align: center;  
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.container span {
+  padding: 0;
+  margin-top: 0;
+  display: block;
+  width: 100px;
+  font-size: 70px;
+  margin: 0 auto;
+}

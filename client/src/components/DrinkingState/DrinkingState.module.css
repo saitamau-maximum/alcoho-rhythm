@@ -1,0 +1,55 @@
+.drinkingStateContainer {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  width: 60%;
+  height: 100px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 90px;
+}
+
+.drinkingCountContainer {
+  padding: 0;
+  width: 50%;
+}
+
+.healthyDrinkingRateContainer {
+  padding: 0;
+  width: 50%;
+  position: relative; /* 擬似要素を使うために親要素にposition: relativeを設定 */
+  background-color: transparent; /* 背景を透明に設定 */
+  border-left: 2px solid gray; /* 左側のボーダーを通常通りに追加 */
+}
+
+
+.drinkingCountContainer h1 {
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+}
+
+.drinkingCountContainer div {
+  display: flex;
+  justify-content: center;
+}
+
+.drinkingCountContainer span {
+  font-size: 30px;
+  text-align: center;
+}
+
+.healthyDrinkingRateContainer h1 {
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+}
+
+.healthyDrinkingRateContainer div {
+  display: flex;
+  justify-content: center;
+}
+
+.healthyDrinkingRateContainer span {
+  font-size: 30px;
+}

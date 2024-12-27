@@ -1,0 +1,80 @@
+.container {
+  /* background-color: rgb(196, 200, 238); */
+  width: 1500px;
+  margin: 0 auto;
+}
+
+.navigation {
+  border-bottom: 2px solid rgb(43, 153, 231);
+  padding-top: 30px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5px;
+}
+
+.dataContainer {
+  margin: 0 50px;
+}
+
+.month {
+  margin: 0 60px;
+}
+
+.triangleRight {
+  all: unset;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  outline: none; 
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  border-right: 100px solid rgb(86, 81, 81); /* 幅を広げる */
+  background-color: rgb(237, 245, 249);
+}
+
+.triangleLeft {
+  all: unset;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  outline: none;
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  border-left: 100px solid rgb(86, 81, 81); /* 幅を広げる */
+  background-color: rgb(237, 245, 249);
+}
+
+.drinkingDataContainer {
+  display: flex;
+}
+
+.leftContainer {
+  width: 65%;
+  height: 750px;
+}
+
+.leftTopContainer {
+  display: flex;
+  padding: 0 30px;
+}
+
+.rightContainer {
+  width: 35%;
+  height: 700px;
+  background-color: rgb(237, 245, 249);
+  padding: 0 30px;
+}
+

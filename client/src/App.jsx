@@ -4,16 +4,13 @@ import Dashboard from "./Dashboard";
 import Signin from "./signin/Signin";
 import Register from "./register/Register";
 import Signup from "./signup/Signup";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <header>
-          <Link to="/signup">Signup</Link> | <Link to="/signin">Signin</Link> |{" "}
-          <Link to="/dashboard">Dashboard</Link> |{" "}
-          <Link to="/Register">Register</Link>
-        </header>
+        <Header />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
